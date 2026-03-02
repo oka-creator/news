@@ -55,7 +55,8 @@ async function fetchNews() {
 - 日本語で書いてください
 - JSONのみを返してください`;
 
-  const res = await fetch(
+  // Step 1: Google検索でニュースを取得
+  const searchRes = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_API_KEY}`,
     {
       method: 'POST',
@@ -71,21 +72,83 @@ async function fetchNews() {
     }
   );
 
-  const data = await res.json();
-
-  if (data.error) {
-    throw new Error(`Gemini API Error: ${data.error.message}`);
+  const searchData = await searchRes.json();
+  if (searchData.error) {
+    throw new Error(`Gemini API Error: ${searchData.error.message}`);
   }
 
-  const text = data.candidates?.[0]?.content?.parts
+  const searchText = searchData.candidates?.[0]?.content?.parts
+    ?.filter(p => p.text)
+    ?.map(p => p.text)
+    ?.join('\n') || '';
+
+  if (!searchText) throw new Error('Empty response from search step');
+  console.log('Search step done, got text length:', searchText.length);
+
+  // Step 2: 検索結果を構造化JSONに変換（google_searchなし、responseMimeType指定）
+  const structurePrompt = `以下のテックニュース情報を、指定のJSON形式に変換してください。
+
+--- ニュース情報 ---
+${searchText}
+--- ここまで ---
+
+以下のJSON形式で出力してください:
+{
+  "date": "${today}",
+  "categories": [
+    {
+      "name": "カテゴリ名",
+      "icon": "絵文字",
+      "articles": [
+        {
+          "title": "タイトル",
+          "summary": "要約",
+          "source": "情報源",
+          "impact": "high or medium or low"
+        }
+      ]
+    }
+  ]
+}
+
+カテゴリは「生成AI・LLM」(🤖)、「個人開発・インディーハッカー」(🚀)、「テック全般」(💻)の3つ、各3記事。
+タイトルや要約の中にダブルクォートは使わず、「」や『』を使ってください。`;
+
+  const structureRes = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: structurePrompt }] }],
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 4096,
+          responseMimeType: 'application/json'
+        }
+      })
+    }
+  );
+
+  const structureData = await structureRes.json();
+  if (structureData.error) {
+    throw new Error(`Gemini Structure API Error: ${structureData.error.message}`);
+  }
+
+  const jsonText = structureData.candidates?.[0]?.content?.parts
     ?.filter(p => p.text)
     ?.map(p => p.text)
     ?.join('') || '';
 
-  if (!text) throw new Error('Empty response from Gemini');
+  if (!jsonText) throw new Error('Empty response from structure step');
 
-  const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-  return JSON.parse(cleaned);
+  try {
+    return JSON.parse(jsonText);
+  } catch (e) {
+    console.error('JSON parse failed:', e.message);
+    console.error('Raw response (first 1000):', jsonText.substring(0, 1000));
+    throw e;
+  }
 }
 
 function generateHTML(newsData) {
