@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のテックニュース | 2026年3月2日</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08080d;
+    --surface: #111119;
+    --surface2: #1a1a26;
+    --accent: #ff6b35;
+    --accent2: #ff9f1c;
+    --text: #e4e4ed;
+    --text-dim: #7c7c95;
+    --border: #252538;
+    --gradient: linear-gradient(135deg, #ff6b35, #ff9f1c);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-1 { background: var(--accent); top: -150px; right: -150px; }
+  .glow-2 { background: var(--accent2); bottom: -150px; left: -150px; }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+  h1 {
+    font-family: 'Dela Gothic One', cursive;
+    font-size: clamp(24px, 6vw, 40px);
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+  .date {
+    color: var(--text-dim);
+    font-size: 15px;
+  }
+
+  .category {
+    margin-bottom: 36px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .category:nth-child(1) { animation-delay: 0.1s; }
+  .category:nth-child(2) { animation-delay: 0.2s; }
+  .category:nth-child(3) { animation-delay: 0.3s; }
+
+  .category-title {
+    font-family: 'Dela Gothic One', cursive;
+    font-size: 20px;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .articles { display: flex; flex-direction: column; gap: 12px; }
+
+  .article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    transition: border-color 0.3s, transform 0.2s;
+  }
+  .article:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .article-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .article-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: var(--gradient);
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .article-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .source {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .article-title {
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .article-summary {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s ease 0.4s both;
+  }
+  .footer-tags {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .footer-credit {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+  .update-info {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 24px 16px 40px; }
+    .article { padding: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<div class="container">
+  <header>
+    <div class="badge">📰 DAILY TECH NEWS</div>
+    <h1>今日のテックニュース</h1>
+    <p class="date">2026年3月2日</p>
+  </header>
+  
+      <section class="category">
+        <h2 class="category-title">🤖 生成AI・LLM</h2>
+        <div class="articles">
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">1</span>
+          <div class="article-meta">
+            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
+            <span class="source">TechCrunch</span>
+          </div>
+        </div>
+        <h3 class="article-title">〇〇社、次世代LLM「GeniusX」を発表：マルチモダリティと自己修正機能を強化</h3>
+        <p class="article-summary">AI大手〇〇社が、次世代大規模言語モデル「GeniusX」を発表しました。このモデルは、テキスト、画像、音声のマルチモモダリティ対応に加え、自己修正学習機能を大幅に強化しており、より複雑なタスクの理解と実行が可能になります。開発者向けAPIも同時に公開され、多様なアプリケーションへの統合が期待されます。</p>
+      </div>
+    
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">2</span>
+          <div class="article-meta">
+            <span style="background:#ff9f1c20;border:1px solid #ff9f1c;color:#ff9f1c;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">MID</span>
+            <span class="source">The Verge</span>
+          </div>
+        </div>
+        <h3 class="article-title">個人開発者向けAIモデル最適化ツール「AI Edge Optimizer」がローンチ</h3>
+        <p class="article-summary">スタートアップ企業が、個人開発者や中小企業向けのAIモデル最適化ツール「AI Edge Optimizer」をローンチしました。このツールは、限られたリソースでも効率的にLLMをエッジデバイスや小規模サーバーにデプロイできるよう、モデルの軽量化と推論速度の向上を自動で行います。コスト削減とパフォーマンス向上の両面で開発者に大きなメリットをもたらします。</p>
+      </div>
+    
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">3</span>
+          <div class="article-meta">
+            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
+            <span class="source">GitHub Community</span>
+          </div>
+        </div>
+        <h3 class="article-title">オープンソースLLM「Sakura-70B」の日本語性能が飛躍的に向上、商用利用も可能に</h3>
+        <p class="article-summary">コミュニティ主導で開発が進むオープンソースLLM「Sakura-70B」の最新版が公開され、特に日本語における理解力と生成能力が大幅に向上しました。これにより、日本語特化のアプリケーション開発が加速すると見られています。また、商用利用が可能なライセンスが採用されたことで、ビジネス分野での活用も期待されています。</p>
+      </div>
+    </div>
+      </section>
+    
+      <section class="category">
+        <h2 class="category-title">🚀 個人開発・インディーハッカー</h2>
+        <div class="articles">
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">1</span>
+          <div class="article-meta">
+            <span style="background:#ff9f1c20;border:1px solid #ff9f1c;color:#ff9f1c;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">MID</span>
+            <span class="source">Indie Hackers</span>
+          </div>
+        </div>
+        <h3 class="article-title">ノーコードでWebアプリをPWA化する新サービス「AppifyMe」が人気急上昇</h3>
+        <p class="article-summary">個人開発者向けに、既存のWebサイトやWebアプリケーションを簡単にプログレッシブウェブアプリ（PWA）に変換できるノーコードサービス「AppifyMe」が急速にユーザー数を伸ばしています。プッシュ通知やオフライン対応など、ネイティブアプリに近い体験を手軽に提供できるため、ユーザーエンゲージメント向上を目指すインディーハッカーから注目を集めています。</p>
+      </div>
+    
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">2</span>
+          <div class="article-meta">
+            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
+            <span class="source">Product Hunt</span>
+          </div>
+        </div>
+        <h3 class="article-title">月額サブスクリプション管理プラットフォーム「SubManager Pro」が開発者向けAPIを公開</h3>
+        <p class="article-summary">個人開発者が自身のデジタルプロダクトのサブスクリプションを管理するためのツール「SubManager Pro」が、開発者向けAPIを公開しました。これにより、決済システムとの連携やユーザーデータの取得がより柔軟に行えるようになり、カスタムダッシュボードや独自の分析機能の実装が可能になります。インディーハッカーの収益化戦略に新たな選択肢を提供します。</p>
+      </div>
+    
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">3</span>
+          <div class="article-meta">
+            <span style="background:#4a9eff20;border:1px solid #4a9eff;color:#4a9eff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">LOW</span>
+            <span class="source">TechCrunch Japan</span>
+          </div>
+        </div>
+        <h3 class="article-title">個人開発者向けクラウドファンディングプラットフォーム「LaunchPad」が資金調達に成功</h3>
+        <p class="article-summary">インディーハッカーが自身のプロジェクトの資金を調達するための専門プラットフォーム「LaunchPad」が、シリーズAラウンドで数億円の資金調達に成功しました。これにより、プラットフォームの機能拡充やマーケティング支援が強化され、より多くの個人開発者がアイデアを実現しやすくなると期待されています。成功事例の増加が注目されます。</p>
+      </div>
+    </div>
+      </section>
+    
+      <section class="category">
+        <h2 class="category-title">💻 テック全般</h2>
+        <div class="articles">
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">1</span>
+          <div class="article-meta">
+            <span style="background:#ff9f1c20;border:1px solid #ff9f1c;color:#ff9f1c;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">MID</span>
+            <span class="source">Wired</span>
+          </div>
+        </div>
+        <h3 class="article-title">次世代ワイヤレス充電技術「AirCharge」が実用化へ、数メートル離れても充電可能に</h3>
+        <p class="article-summary">新たなワイヤレス充電技術「AirCharge」が、数メートル離れた場所からでも複数のデバイスを同時に充電できるレベルに達し、実用化に向けた最終段階に入ったと発表されました。これにより、ケーブル不要の真のワイヤレス環境が実現に近づき、スマートホームやオフィス環境の設計に大きな影響を与える可能性があります。対応デバイスの登場が待たれます。</p>
+      </div>
+    
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">2</span>
+          <div class="article-meta">
+            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
+            <span class="source">MIT Technology Review</span>
+          </div>
+        </div>
+        <h3 class="article-title">量子コンピューティング向け新プログラミング言語「Quasar」が発表</h3>
+        <p class="article-summary">量子コンピューティングの研究機関が、より直感的で効率的な量子アルゴリズム開発を可能にする新プログラミング言語「Quasar」を発表しました。既存の量子言語と比較して、複雑な量子回路の記述が容易になり、開発者の学習コストを低減することが期待されています。量子ソフトウェア開発の民主化に貢献する可能性があります。</p>
+      </div>
+    
+      <div class="article">
+        <div class="article-header">
+          <span class="article-num">3</span>
+          <div class="article-meta">
+            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
+            <span class="source">InfoQ</span>
+          </div>
+        </div>
+        <h3 class="article-title">WebAssemblyがサーバーサイド開発で台頭、Node.jsの代替として注目</h3>
+        <p class="article-summary">WebAssembly（Wasm）がブラウザだけでなく、サーバーサイド開発においてもその存在感を増しています。特に、高いパフォーマンスとクロスプラットフォーム互換性から、従来のNode.jsやPythonなどの代替として注目を集めており、複数の大手クラウドプロバイダーがWasmベースのランタイムサポートを強化しています。開発者は、より高速で安全なサーバーサイドアプリケーション構築の選択肢を得ることになります。</p>
+      </div>
+    </div>
+      </section>
+    
+  <footer>
+    <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
+    <div class="footer-credit">Powered by Gemini API × GitHub Actions</div>
+    <div class="update-info">毎朝 7:00 自動更新</div>
+  </footer>
+</div>
+</body>
+</html>
