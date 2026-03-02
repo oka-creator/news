@@ -19,41 +19,8 @@ async function fetchNews() {
 2. 個人開発・インディーハッカー
 3. テック全般
 
-各ニュースについて以下のJSON形式で返してください。JSON以外のテキストは一切含めないでください。
-
-{
-  "date": "${today}",
-  "categories": [
-    {
-      "name": "生成AI・LLM",
-      "icon": "🤖",
-      "articles": [
-        {
-          "title": "ニュースのタイトル",
-          "summary": "3-4文での要約。何が起きたか、なぜ重要かを含める",
-          "source": "情報源（メディア名やサービス名）",
-          "impact": "high / medium / low（開発者への影響度）"
-        }
-      ]
-    },
-    {
-      "name": "個人開発・インディーハッカー",
-      "icon": "🚀",
-      "articles": [...]
-    },
-    {
-      "name": "テック全般",
-      "icon": "💻",
-      "articles": [...]
-    }
-  ]
-}
-
-重要：
-- 必ず直近1-2日以内の最新ニュースを取り上げてください
-- 開発者・個人開発者にとって実用的で重要なニュースを優先してください
-- 日本語で書いてください
-- JSONのみを返してください`;
+各ニュースについて必ず情報ソースのURLも含めてください。
+できるだけ具体的で実用的な情報を含めてください。`;
 
   // Step 1: Google検索でニュースを取得
   const searchRes = await fetch(
@@ -65,7 +32,7 @@ async function fetchNews() {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 4096
+          maxOutputTokens: 8192
         },
         tools: [{ google_search: {} }]
       })
@@ -85,7 +52,7 @@ async function fetchNews() {
   if (!searchText) throw new Error('Empty response from search step');
   console.log('Search step done, got text length:', searchText.length);
 
-  // Step 2: 検索結果を構造化JSONに変換（google_searchなし、responseMimeType指定）
+  // Step 2: 構造化JSONに変換
   const structurePrompt = `以下のテックニュース情報を、指定のJSON形式に変換してください。
 
 --- ニュース情報 ---
@@ -97,22 +64,38 @@ ${searchText}
   "date": "${today}",
   "categories": [
     {
-      "name": "カテゴリ名",
-      "icon": "絵文字",
+      "name": "生成AI・LLM",
+      "icon": "robot",
       "articles": [
         {
-          "title": "タイトル",
-          "summary": "要約",
-          "source": "情報源",
-          "impact": "high or medium or low"
+          "title": "ニュースのタイトル",
+          "summary": "4-5文での詳しい要約。何が起きたか、なぜ重要か、開発者への影響を含める",
+          "source": "情報源の名前",
+          "url": "情報源のURL（https://から始まる完全なURL）",
+          "impact": "high or medium or low",
+          "tags": ["関連タグ1", "関連タグ2"]
         }
       ]
+    },
+    {
+      "name": "個人開発・インディーハッカー",
+      "icon": "rocket",
+      "articles": [...]
+    },
+    {
+      "name": "テック全般",
+      "icon": "laptop",
+      "articles": [...]
     }
   ]
 }
 
-カテゴリは「生成AI・LLM」(🤖)、「個人開発・インディーハッカー」(🚀)、「テック全般」(💻)の3つ、各3記事。
-タイトルや要約の中にダブルクォートは使わず、「」や『』を使ってください。`;
+重要ルール:
+- カテゴリは必ず3つ、各3記事
+- タイトルや要約の中にダブルクォートは使わず「」や『』を使ってください
+- URLは必ず実在するURLを入れてください。不明な場合はGoogle検索URLでも可
+- summaryは4-5文で詳しく書いてください
+- tagsは各記事に2-3個つけてください`;
 
   const structureRes = await fetch(
     `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${GEMINI_API_KEY}`,
@@ -123,7 +106,7 @@ ${searchText}
         contents: [{ parts: [{ text: structurePrompt }] }],
         generationConfig: {
           temperature: 0.3,
-          maxOutputTokens: 4096,
+          maxOutputTokens: 8192,
           responseMimeType: 'application/json'
         }
       })
@@ -151,39 +134,27 @@ ${searchText}
   }
 }
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
 function generateHTML(newsData) {
-  const impactBadge = (impact) => {
-    const colors = {
-      high: { bg: '#ff6b3520', border: '#ff6b35', text: '#ff6b35', label: 'HIGH' },
-      medium: { bg: '#ff9f1c20', border: '#ff9f1c', text: '#ff9f1c', label: 'MID' },
-      low: { bg: '#4a9eff20', border: '#4a9eff', text: '#4a9eff', label: 'LOW' }
-    };
-    const c = colors[impact] || colors.medium;
-    return `<span style="background:${c.bg};border:1px solid ${c.border};color:${c.text};padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">${c.label}</span>`;
-  };
+  // Escape all data for safe embedding in JS
+  const safeCats = newsData.categories.map(cat => ({
+    name: escapeHtml(cat.name),
+    icon: cat.icon,
+    articles: cat.articles.map(a => ({
+      title: escapeHtml(a.title),
+      summary: escapeHtml(a.summary),
+      source: escapeHtml(a.source),
+      url: a.url || '#',
+      impact: a.impact || 'medium',
+      tags: (a.tags || []).map(t => escapeHtml(t))
+    }))
+  }));
 
-  const categoriesHTML = newsData.categories.map(cat => {
-    const articlesHTML = cat.articles.map((article, i) => `
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">${i + 1}</span>
-          <div class="article-meta">
-            ${impactBadge(article.impact)}
-            <span class="source">${escapeHtml(article.source)}</span>
-          </div>
-        </div>
-        <h3 class="article-title">${escapeHtml(article.title)}</h3>
-        <p class="article-summary">${escapeHtml(article.summary)}</p>
-      </div>
-    `).join('');
-
-    return `
-      <section class="category">
-        <h2 class="category-title">${cat.icon} ${escapeHtml(cat.name)}</h2>
-        <div class="articles">${articlesHTML}</div>
-      </section>
-    `;
-  }).join('');
+  const categoriesJSON = JSON.stringify(safeCats);
 
   return `<!DOCTYPE html>
 <html lang="ja">
@@ -191,243 +162,365 @@ function generateHTML(newsData) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>今日のテックニュース | ${escapeHtml(newsData.date)}</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #08080d;
-    --surface: #111119;
-    --surface2: #1a1a26;
+    --bg: #f5f5f8;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #555568;
+    --text-light: #8888a0;
+    --border: #e4e4ec;
     --accent: #ff6b35;
-    --accent2: #ff9f1c;
-    --text: #e4e4ed;
-    --text-dim: #7c7c95;
-    --border: #252538;
-    --gradient: linear-gradient(135deg, #ff6b35, #ff9f1c);
+    --accent-hover: #e85d2c;
+    --tag-bg: #f0f0f5;
+    --shadow: 0 1px 8px rgba(0,0,0,0.05);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.09);
+    --radius: 14px;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
-    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    line-height: 1.7;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
   }
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-  .glow {
-    position: fixed;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    filter: blur(140px);
-    opacity: 0.06;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .glow-1 { background: var(--accent); top: -150px; right: -150px; }
-  .glow-2 { background: var(--accent2); bottom: -150px; left: -150px; }
 
   .container {
-    position: relative;
-    z-index: 1;
     max-width: 760px;
     margin: 0 auto;
-    padding: 40px 20px 60px;
+    padding: 32px 20px 60px;
   }
 
+  /* ---- Header ---- */
   header {
     text-align: center;
-    margin-bottom: 48px;
-    animation: fadeUp 0.6s ease both;
-  }
-  .badge {
-    display: inline-block;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 6px 16px;
-    border-radius: 100px;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    margin-bottom: 16px;
-    font-weight: 700;
-  }
-  h1 {
-    font-family: 'Dela Gothic One', cursive;
-    font-size: clamp(24px, 6vw, 40px);
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     margin-bottom: 8px;
   }
-  .date {
-    color: var(--text-dim);
-    font-size: 15px;
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .date-display {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 2px;
   }
 
-  .category {
-    margin-bottom: 36px;
-    animation: fadeUp 0.6s ease both;
+  /* ---- Date nav ---- */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 24px;
   }
-  .category:nth-child(1) { animation-delay: 0.1s; }
-  .category:nth-child(2) { animation-delay: 0.2s; }
-  .category:nth-child(3) { animation-delay: 0.3s; }
-
-  .category-title {
-    font-family: 'Dela Gothic One', cursive;
-    font-size: 20px;
+  .date-nav input[type="date"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
     color: var(--text);
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--border);
+    cursor: pointer;
+    outline: none;
   }
+  .date-nav input[type="date"]:focus { border-color: var(--accent); }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  .articles { display: flex; flex-direction: column; gap: 12px; }
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text-sub); background: var(--tag-bg); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,0.25);
+  }
+  .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ---- Article card ---- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
 
   .article {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px;
-    transition: border-color 0.3s, transform 0.2s;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.15s;
+    animation: fadeIn 0.35s ease both;
   }
-  .article:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
+  .article:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .article:nth-child(2) { animation-delay: 0.07s; }
+  .article:nth-child(3) { animation-delay: 0.14s; }
 
-  .article-header {
+  .article-top {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
     margin-bottom: 10px;
   }
-  .article-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    background: var(--gradient);
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 900;
-    color: #fff;
-    flex-shrink: 0;
+
+  .impact-badge {
+    padding: 2px 9px;
+    border-radius: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
   }
-  .article-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .source {
-    font-size: 12px;
-    color: var(--text-dim);
-  }
+  .impact-high   { background: #fff0ed; color: #d94432; }
+  .impact-medium { background: #fff8ed; color: #c96d10; }
+  .impact-low    { background: #edf4ff; color: #3578c5; }
+
+  .article-source { font-size: 12px; color: var(--text-light); }
 
   .article-title {
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 800;
+    line-height: 1.55;
     margin-bottom: 8px;
-    line-height: 1.5;
-  }
-  .article-summary {
-    font-size: 14px;
-    color: var(--text-dim);
-    line-height: 1.8;
   }
 
+  .article-summary {
+    font-size: 13.5px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .article-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--text-sub);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-link:hover { color: var(--accent-hover); }
+
+  /* ---- Footer ---- */
   footer {
     text-align: center;
-    margin-top: 48px;
-    padding-top: 24px;
+    margin-top: 36px;
+    padding-top: 18px;
     border-top: 1px solid var(--border);
-    animation: fadeUp 0.6s ease 0.4s both;
   }
-  .footer-tags {
-    font-size: 13px;
-    color: var(--accent);
-    font-weight: 700;
-  }
-  .footer-credit {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 8px;
-  }
-  .update-info {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 4px;
-  }
+  .footer-tags { font-size: 13px; color: var(--accent); font-weight: 700; }
+  .footer-info { font-size: 11.5px; color: var(--text-light); margin-top: 4px; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+  .empty-state p { font-size: 14px; margin-top: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   @media (max-width: 520px) {
-    .container { padding: 24px 16px 40px; }
+    .container { padding: 20px 14px 40px; }
     .article { padding: 18px; }
+    h1 { font-size: 20px; }
+    .tab { font-size: 11px; padding: 9px 4px; }
+    .tab-icon { font-size: 16px; }
   }
 </style>
 </head>
 <body>
-<div class="glow glow-1"></div>
-<div class="glow glow-2"></div>
+
 <div class="container">
   <header>
-    <div class="badge">📰 DAILY TECH NEWS</div>
-    <h1>今日のテックニュース</h1>
-    <p class="date">${escapeHtml(newsData.date)}</p>
+    <div class="header-row">
+      <span style="font-size:26px">📰</span>
+      <h1>今日のテックニュース</h1>
+    </div>
+    <div class="date-display">${escapeHtml(newsData.date)}</div>
   </header>
-  ${categoriesHTML}
+
+  <nav class="date-nav">
+    <button class="date-btn" onclick="navigateDate(-1)">&larr; 前日</button>
+    <input type="date" id="datePicker" onchange="loadDate(this.value)" />
+    <button class="date-btn" onclick="navigateDate(1)">翌日 &rarr;</button>
+  </nav>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
   <footer>
     <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
-    <div class="footer-credit">Powered by Gemini API × GitHub Actions</div>
-    <div class="update-info">毎朝 7:00 自動更新</div>
+    <div class="footer-info">Powered by Gemini API &times; GitHub Actions &#x2502; 毎朝 7:00 自動更新</div>
   </footer>
 </div>
+
+<script>
+const categories = ${categoriesJSON};
+const ARCHIVE_BASE = './archive/';
+let activeTab = 0;
+
+const ICONS = { robot: '\\u{1F916}', rocket: '\\u{1F680}', laptop: '\\u{1F4BB}' };
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = categories.map((c, i) =>
+    '<button class="tab' + (i === activeTab ? ' active' : '') + '" onclick="switchTab(' + i + ')">' +
+    '<span class="tab-icon">' + (ICONS[c.icon] || '') + '</span>' + c.name + '</button>'
+  ).join('');
+}
+
+function renderArticles(ci) {
+  const cat = categories[ci];
+  if (!cat || !cat.articles || cat.articles.length === 0) {
+    document.getElementById('content').innerHTML = '<div class="empty-state"><p>\\u{1F4ED} この日の記事はありません</p></div>';
+    return;
+  }
+
+  const linkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  var html = '<div class="tab-content active">';
+  for (var i = 0; i < cat.articles.length; i++) {
+    var a = cat.articles[i];
+    var ic = 'impact-' + (a.impact || 'medium');
+    var il = (a.impact || 'medium').toUpperCase();
+    if (il === 'MEDIUM') il = 'MID';
+    var tags = '';
+    if (a.tags) {
+      for (var t = 0; t < a.tags.length; t++) {
+        tags += '<span class="tag">' + a.tags[t] + '</span>';
+      }
+    }
+    var link = '';
+    if (a.url && a.url !== '#') {
+      link = '<a href="' + a.url + '" target="_blank" rel="noopener" class="source-link">' + linkIcon + ' \\u30BD\\u30FC\\u30B9\\u3092\\u8AAD\\u3080</a>';
+    }
+    html += '<div class="article">' +
+      '<div class="article-top"><span class="impact-badge ' + ic + '">' + il + '</span><span class="article-source">' + a.source + '</span></div>' +
+      '<h3 class="article-title">' + a.title + '</h3>' +
+      '<p class="article-summary">' + a.summary + '</p>' +
+      '<div class="article-footer"><div class="article-tags">' + tags + '</div>' + link + '</div>' +
+      '</div>';
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function switchTab(i) { activeTab = i; renderTabs(); renderArticles(i); }
+
+function getTodayStr() {
+  var d = new Date();
+  var jst = new Date(d.getTime() + (9 * 3600000) + (d.getTimezoneOffset() * 60000));
+  return jst.toISOString().slice(0, 10);
+}
+
+function initDatePicker() { document.getElementById('datePicker').value = getTodayStr(); }
+
+function navigateDate(delta) {
+  var p = document.getElementById('datePicker');
+  var d = new Date(p.value);
+  d.setDate(d.getDate() + delta);
+  p.value = d.toISOString().slice(0, 10);
+  loadDate(p.value);
+}
+
+function loadDate(ds) {
+  if (ds === getTodayStr()) { window.location.href = './'; return; }
+  window.location.href = ARCHIVE_BASE + ds + '.html';
+}
+
+renderTabs();
+renderArticles(0);
+initDatePicker();
+</script>
 </body>
 </html>`;
 }
 
-function escapeHtml(str) {
-  if (!str) return '';
-  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
-
 async function main() {
   console.log('Fetching news from Gemini API...');
-
   try {
     const newsData = await fetchNews();
-    console.log(`Got ${newsData.categories.length} categories`);
+    console.log('Got ' + newsData.categories.length + ' categories');
 
     const html = generateHTML(newsData);
-
     const publicDir = path.join(__dirname, 'public');
-    if (!fs.existsSync(publicDir)) {
-      fs.mkdirSync(publicDir, { recursive: true });
-    }
+    if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
 
     fs.writeFileSync(path.join(publicDir, 'index.html'), html, 'utf-8');
     console.log('Generated public/index.html');
 
-    // アーカイブも保存（日付別）
     const dateStr = new Date().toISOString().slice(0, 10);
     const archiveDir = path.join(publicDir, 'archive');
-    if (!fs.existsSync(archiveDir)) {
-      fs.mkdirSync(archiveDir, { recursive: true });
-    }
-    fs.writeFileSync(path.join(archiveDir, `${dateStr}.html`), html, 'utf-8');
-    console.log(`Archived to public/archive/${dateStr}.html`);
+    if (!fs.existsSync(archiveDir)) fs.mkdirSync(archiveDir, { recursive: true });
+    fs.writeFileSync(path.join(archiveDir, dateStr + '.html'), html, 'utf-8');
+    console.log('Archived to public/archive/' + dateStr + '.html');
 
   } catch (err) {
     console.error('Error:', err.message);
