@@ -84,16 +84,43 @@ async function fetchNews() {
 
   if (!text) throw new Error('Empty response from Gemini');
 
-  const cleaned = text
+  let cleaned = text
     .replace(/```json\n?/g, '')
     .replace(/```\n?/g, '')
-    .trim()
-    // JSON文字列内の制御文字を除去
-    .replace(/[\x00-\x1F\x7F]/g, (ch) => {
-      if (ch === '\n' || ch === '\r' || ch === '\t') return ' ';
-      return '';
-    });
-  return JSON.parse(cleaned);
+    .trim();
+
+  // JSON部分だけ抽出（最初の { から最後の } まで）
+  const startIdx = cleaned.indexOf('{');
+  const endIdx = cleaned.lastIndexOf('}');
+  if (startIdx === -1 || endIdx === -1) {
+    console.error('No JSON object found in response:', cleaned.substring(0, 500));
+    throw new Error('No JSON object found in response');
+  }
+  cleaned = cleaned.substring(startIdx, endIdx + 1);
+
+  // 制御文字を除去
+  cleaned = cleaned.replace(/[\x00-\x1F\x7F]/g, (ch) => {
+    if (ch === '\n' || ch === '\r' || ch === '\t') return ' ';
+    return '';
+  });
+
+  // シングルクォートをダブルクォートに（Geminiが時々やる）
+  // ただしJSON文字列値内のアポストロフィは保持
+  try {
+    return JSON.parse(cleaned);
+  } catch (e) {
+    console.error('JSON parse failed, raw text (first 1000 chars):', cleaned.substring(0, 1000));
+    console.error('Parse error:', e.message);
+    
+    // 末尾カンマ除去して再試行
+    const fixedTrailing = cleaned.replace(/,\s*([\]}])/g, '$1');
+    try {
+      return JSON.parse(fixedTrailing);
+    } catch (e2) {
+      console.error('Second parse also failed:', e2.message);
+      throw e2;
+    }
+  }
 }
 
 function generateHTML(newsData) {
