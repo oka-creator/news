@@ -84,7 +84,15 @@ async function fetchNews() {
 
   if (!text) throw new Error('Empty response from Gemini');
 
-  const cleaned = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+  const cleaned = text
+    .replace(/```json\n?/g, '')
+    .replace(/```\n?/g, '')
+    .trim()
+    // JSON文字列内の制御文字を除去
+    .replace(/[\x00-\x1F\x7F]/g, (ch) => {
+      if (ch === '\n' || ch === '\r' || ch === '\t') return ' ';
+      return '';
+    });
   return JSON.parse(cleaned);
 }
 
