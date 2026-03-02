@@ -4,331 +4,342 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>今日のテックニュース | 2026年3月2日</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&family=Dela+Gothic+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #08080d;
-    --surface: #111119;
-    --surface2: #1a1a26;
+    --bg: #f5f5f8;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #555568;
+    --text-light: #8888a0;
+    --border: #e4e4ec;
     --accent: #ff6b35;
-    --accent2: #ff9f1c;
-    --text: #e4e4ed;
-    --text-dim: #7c7c95;
-    --border: #252538;
-    --gradient: linear-gradient(135deg, #ff6b35, #ff9f1c);
+    --accent-hover: #e85d2c;
+    --tag-bg: #f0f0f5;
+    --shadow: 0 1px 8px rgba(0,0,0,0.05);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.09);
+    --radius: 14px;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
-    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    line-height: 1.7;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
   }
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-  }
-  .glow {
-    position: fixed;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    filter: blur(140px);
-    opacity: 0.06;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .glow-1 { background: var(--accent); top: -150px; right: -150px; }
-  .glow-2 { background: var(--accent2); bottom: -150px; left: -150px; }
 
   .container {
-    position: relative;
-    z-index: 1;
     max-width: 760px;
     margin: 0 auto;
-    padding: 40px 20px 60px;
+    padding: 32px 20px 60px;
   }
 
+  /* ---- Header ---- */
   header {
     text-align: center;
-    margin-bottom: 48px;
-    animation: fadeUp 0.6s ease both;
-  }
-  .badge {
-    display: inline-block;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    padding: 6px 16px;
-    border-radius: 100px;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    margin-bottom: 16px;
-    font-weight: 700;
-  }
-  h1 {
-    font-family: 'Dela Gothic One', cursive;
-    font-size: clamp(24px, 6vw, 40px);
-    background: var(--gradient);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     margin-bottom: 8px;
   }
-  .date {
-    color: var(--text-dim);
-    font-size: 15px;
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .date-display {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 2px;
   }
 
-  .category {
-    margin-bottom: 36px;
-    animation: fadeUp 0.6s ease both;
+  /* ---- Date nav ---- */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 24px;
   }
-  .category:nth-child(1) { animation-delay: 0.1s; }
-  .category:nth-child(2) { animation-delay: 0.2s; }
-  .category:nth-child(3) { animation-delay: 0.3s; }
-
-  .category-title {
-    font-family: 'Dela Gothic One', cursive;
-    font-size: 20px;
+  .date-nav input[type="date"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
     color: var(--text);
-    margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 2px solid var(--border);
+    cursor: pointer;
+    outline: none;
   }
+  .date-nav input[type="date"]:focus { border-color: var(--accent); }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-  .articles { display: flex; flex-direction: column; gap: 12px; }
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text-sub); background: var(--tag-bg); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,0.25);
+  }
+  .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ---- Article card ---- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
 
   .article {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 22px;
-    transition: border-color 0.3s, transform 0.2s;
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.15s;
+    animation: fadeIn 0.35s ease both;
   }
-  .article:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
+  .article:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .article:nth-child(2) { animation-delay: 0.07s; }
+  .article:nth-child(3) { animation-delay: 0.14s; }
 
-  .article-header {
+  .article-top {
     display: flex;
     align-items: center;
-    gap: 12px;
+    justify-content: space-between;
     margin-bottom: 10px;
   }
-  .article-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    background: var(--gradient);
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 900;
-    color: #fff;
-    flex-shrink: 0;
+
+  .impact-badge {
+    padding: 2px 9px;
+    border-radius: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
   }
-  .article-meta {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .source {
-    font-size: 12px;
-    color: var(--text-dim);
-  }
+  .impact-high   { background: #fff0ed; color: #d94432; }
+  .impact-medium { background: #fff8ed; color: #c96d10; }
+  .impact-low    { background: #edf4ff; color: #3578c5; }
+
+  .article-source { font-size: 12px; color: var(--text-light); }
 
   .article-title {
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 800;
+    line-height: 1.55;
     margin-bottom: 8px;
-    line-height: 1.5;
-  }
-  .article-summary {
-    font-size: 14px;
-    color: var(--text-dim);
-    line-height: 1.8;
   }
 
+  .article-summary {
+    font-size: 13.5px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .article-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--text-sub);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-link:hover { color: var(--accent-hover); }
+
+  /* ---- Footer ---- */
   footer {
     text-align: center;
-    margin-top: 48px;
-    padding-top: 24px;
+    margin-top: 36px;
+    padding-top: 18px;
     border-top: 1px solid var(--border);
-    animation: fadeUp 0.6s ease 0.4s both;
   }
-  .footer-tags {
-    font-size: 13px;
-    color: var(--accent);
-    font-weight: 700;
-  }
-  .footer-credit {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 8px;
-  }
-  .update-info {
-    font-size: 12px;
-    color: var(--text-dim);
-    margin-top: 4px;
-  }
+  .footer-tags { font-size: 13px; color: var(--accent); font-weight: 700; }
+  .footer-info { font-size: 11.5px; color: var(--text-light); margin-top: 4px; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+  .empty-state p { font-size: 14px; margin-top: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
   @media (max-width: 520px) {
-    .container { padding: 24px 16px 40px; }
+    .container { padding: 20px 14px 40px; }
     .article { padding: 18px; }
+    h1 { font-size: 20px; }
+    .tab { font-size: 11px; padding: 9px 4px; }
+    .tab-icon { font-size: 16px; }
   }
 </style>
 </head>
 <body>
-<div class="glow glow-1"></div>
-<div class="glow glow-2"></div>
+
 <div class="container">
   <header>
-    <div class="badge">📰 DAILY TECH NEWS</div>
-    <h1>今日のテックニュース</h1>
-    <p class="date">2026年3月2日</p>
+    <div class="header-row">
+      <span style="font-size:26px">📰</span>
+      <h1>今日のテックニュース</h1>
+    </div>
+    <div class="date-display">2026年3月2日</div>
   </header>
-  
-      <section class="category">
-        <h2 class="category-title">🤖 生成AI・LLM</h2>
-        <div class="articles">
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">1</span>
-          <div class="article-meta">
-            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
-            <span class="source">AI Times</span>
-          </div>
-        </div>
-        <h3 class="article-title">OpenAIがAmazonと戦略的提携、GoogleはGemini 3.1 Proを公開しAI競争が激化</h3>
-        <p class="article-summary">OpenAIはAmazon Web Services (AWS) との戦略的提携を発表し、AWSインフラを通じて次世代AIモデル開発を加速させる大規模な資金調達を完了しました。これにより、企業がAWS上でOpenAIモデルをセキュアかつ大規模に利用する際のハードルが下がると期待されます。一方、Googleは最新のAIモデル『Gemini 3.1 Pro』を公開し、より高度な推論能力とマルチモーダル対応を強調。両社の動きにより、生成AI市場における競争は一層激化しています。</p>
-      </div>
-    
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">2</span>
-          <div class="article-meta">
-            <span style="background:#ff9f1c20;border:1px solid #ff9f1c;color:#ff9f1c;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">MID</span>
-            <span class="source">TechCrunch Japan</span>
-          </div>
-        </div>
-        <h3 class="article-title">Microsoft、Copilotのエンタープライズ機能を強化、ビジネスAI導入を加速</h3>
-        <p class="article-summary">Microsoftは、ビジネス向けAIアシスタント『Copilot』のエンタープライズ機能を大幅に強化すると発表しました。セキュリティとデータプライバシーを重視し、既存のMicrosoft 365エコシステムとの連携を深めることで、企業におけるAI導入の障壁を低減し、生産性向上を支援します。</p>
-      </div>
-    
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">3</span>
-          <div class="article-meta">
-            <span style="background:#ff9f1c20;border:1px solid #ff9f1c;color:#ff9f1c;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">MID</span>
-            <span class="source">日経新聞</span>
-          </div>
-        </div>
-        <h3 class="article-title">AI倫理ガイドラインの国際標準化が進展、各国政府が協調姿勢</h3>
-        <p class="article-summary">生成AI技術の急速な発展に伴い、各国政府や国際機関はAI倫理に関するガイドラインの国際標準化に向けた議論を加速させています。透明性、公平性、説明責任を柱とする共通原則の策定が進められており、技術の健全な発展と社会への信頼構築を目指します。</p>
-      </div>
-    </div>
-      </section>
-    
-      <section class="category">
-        <h2 class="category-title">🚀 個人開発・インディーハッカー</h2>
-        <div class="articles">
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">1</span>
-          <div class="article-meta">
-            <span style="background:#ff9f1c20;border:1px solid #ff9f1c;color:#ff9f1c;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">MID</span>
-            <span class="source">Indie Hackers JP</span>
-          </div>
-        </div>
-        <h3 class="article-title">ノーコードツールで爆速開発！個人クリエイターが月間100万PV達成</h3>
-        <p class="article-summary">ある個人開発者が、ノーコードプラットフォームを活用して開発したWebサービスが、リリースからわずか3ヶ月で月間100万PVを達成しました。アイデアを素早く形にし、市場のニーズを捉えたことが成功の鍵と分析されています。</p>
-      </div>
-    
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">2</span>
-          <div class="article-meta">
-            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
-            <span class="source">Startup Times</span>
-          </div>
-        </div>
-        <h3 class="article-title">サイドプロジェクトから生まれたSaaSがシリーズA資金調達を完了</h3>
-        <p class="article-summary">週末のサイドプロジェクトとしてスタートしたSaaSプロダクトが、そのユニークな機能と成長性が評価され、シリーズAラウンドで数億円の資金調達を完了しました。個人開発の可能性を示す事例として注目を集めています。</p>
-      </div>
-    
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">3</span>
-          <div class="article-meta">
-            <span style="background:#4a9eff20;border:1px solid #4a9eff;color:#4a9eff;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">LOW</span>
-            <span class="source">GitHub Blog</span>
-          </div>
-        </div>
-        <h3 class="article-title">OSSコミュニティが活況、個人コントリビューターがプロジェクトを牽引</h3>
-        <p class="article-summary">オープンソースソフトウェア（OSS）コミュニティが世界的に活況を呈しており、特に個人のコントリビューターが主要プロジェクトの進化を牽引するケースが増加しています。技術力の向上と社会貢献を両立させる新たな働き方として注目されています。</p>
-      </div>
-    </div>
-      </section>
-    
-      <section class="category">
-        <h2 class="category-title">💻 テック全般</h2>
-        <div class="articles">
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">1</span>
-          <div class="article-meta">
-            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
-            <span class="source">Nature Tech</span>
-          </div>
-        </div>
-        <h3 class="article-title">量子コンピューティング、実用化に向けた新たなブレイクスルーを発表</h3>
-        <p class="article-summary">量子コンピューティング分野において、エラー訂正技術の画期的な進歩が発表されました。これにより、実用的な量子コンピュータの実現に向けた大きな一歩となると期待されており、医療や材料科学など多岐にわたる分野での応用が視野に入っています。</p>
-      </div>
-    
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">2</span>
-          <div class="article-meta">
-            <span style="background:#ff9f1c20;border:1px solid #ff9f1c;color:#ff9f1c;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">MID</span>
-            <span class="source">Science Daily</span>
-          </div>
-        </div>
-        <h3 class="article-title">次世代バッテリー技術がEV市場に革新をもたらす可能性</h3>
-        <p class="article-summary">既存のリチウムイオン電池を凌駕する次世代バッテリー技術の開発が進んでいます。高エネルギー密度、高速充電、長寿命化を実現する新素材の発見により、電気自動車（EV）の航続距離とコストパフォーマンスが大幅に改善される見込みです。</p>
-      </div>
-    
-      <div class="article">
-        <div class="article-header">
-          <span class="article-num">3</span>
-          <div class="article-meta">
-            <span style="background:#ff6b3520;border:1px solid #ff6b35;color:#ff6b35;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em">HIGH</span>
-            <span class="source">Security Watch</span>
-          </div>
-        </div>
-        <h3 class="article-title">サイバーセキュリティ脅威が高度化、ゼロトラストモデルの導入が急務に</h3>
-        <p class="article-summary">ランサムウェア攻撃や国家レベルのサイバー攻撃が高度化する中、企業や組織におけるセキュリティ対策の強化が喫緊の課題となっています。『ゼロトラスト』モデルの導入が推奨されており、あらゆるアクセスを疑い、常に検証するアプローチが求められています。</p>
-      </div>
-    </div>
-      </section>
-    
+
+  <nav class="date-nav">
+    <button class="date-btn" onclick="navigateDate(-1)">&larr; 前日</button>
+    <input type="date" id="datePicker" onchange="loadDate(this.value)" />
+    <button class="date-btn" onclick="navigateDate(1)">翌日 &rarr;</button>
+  </nav>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
   <footer>
     <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
-    <div class="footer-credit">Powered by Gemini API × GitHub Actions</div>
-    <div class="update-info">毎朝 7:00 自動更新</div>
+    <div class="footer-info">Powered by Gemini API &times; GitHub Actions &#x2502; 毎朝 7:00 自動更新</div>
   </footer>
 </div>
+
+<script>
+const categories = [{"name":"生成AI・LLM","icon":"robot","articles":[{"title":"OpenAIが総額1100億ドルの資金調達とAmazonとの戦略的提携を発表","summary":"OpenAIは企業価値7300億ドルと評価され、Amazon、NVIDIA、ソフトバンクグループから総額1100億ドルを調達しました。特にAmazonとの提携を拡大し、AWSインフラを通じて約2ギガワットの電力を確保、次世代AIモデル開発を加速させます。この提携により、企業がAWS上でOpenAIの最新モデルをセキュアかつ大規模に利用するハードルが大幅に下がります。結果として、「AIインフラ導入支援コンサルタント」の需要が高まると予想され、開発者は新たなビジネスチャンスを掴むことができます。","source":"ITmedia NEWS","url":"https://www.itmedia.co.jp/news/articles/2602/28/news035.html","impact":"high","tags":["生成AI","資金調達","AWS","OpenAI","企業提携"]},{"title":"Googleが推論能力を飛躍的に高めた『Gemini 3.1 Pro』をリリース","summary":"Googleは最新AIモデル「Gemini 3.1 Pro」をパブリックプレビューで公開しました。このモデルは処理速度向上に加え、高度な論理的推論と長いコンテキスト理解で劇的な進化を遂げています。特に強化された「カスタムツール呼び出し機能」により、AIが外部アプリケーションやデータベースと連携し、複雑なタスクを自律的に遂行可能になりました。これにより、特定の業界に特化した「専用AIエージェント」の開発が容易になり、中小企業向けの業務効率化ツール提供や受託開発で高い収益化が期待されます。","source":"Google Cloud Blog","url":"https://docs.cloud.google.com/vertex-ai/generative-ai/docs/models/gemini/3-1-pro","impact":"high","tags":["Gemini","Google AI","LLM","AIエージェント","推論能力"]},{"title":"NTTドコモビジネス、生成AIサービス『Stella AI for Biz』で業界最高水準の議事録機能を提供開始","summary":"NTTドコモビジネスは、SUPERNOVAと連携し、生成AIサービス「Stella AI for Biz」で議事録生成機能の正式版を提供開始しました。この機能は業界最高水準の文字起こし精度を誇り、月間最大230時間の議事録生成を追加料金なしで利用できます。音声による話者分離、モバイルアプリ/ブラウザでのリアルタイム録音、用語登録機能などが特長です。これにより、企業の業務効率化を強力に支援し、開発者は既存システムとの連携やカスタマイズの機会を見出すことができます。","source":"NTTドコモビジネス株式会社 プレスリリース","url":"https://www.docomo.biz/news/press/2024/20240228_01.html","impact":"medium","tags":["議事録AI","業務効率化","NTTドコモ","生成AIサービス"]}]},{"name":"個人開発・インディーハッカー","icon":"rocket","articles":[{"title":"Claude Codeを活用した副業管理アプリの個人開発事例が公開","summary":"JavaエンジニアがReact NativeとClaude Codeを用いて副業管理アプリを個人開発した事例が紹介されました。この開発者はAIによるコード生成やエラー解決のサポートを積極的に活用し、約6週間で15画面、約6,000行のTypeScriptコードを実装しています。この事例は、個人開発においてAIツールが「コードを書く補助」から「プロダクトを作るパートナー」へと進化していることを示しています。特にフロントエンド開発の障壁が下がり、個人開発者がより迅速にアイデアを形にできる実用的な情報を提供します。","source":"note (Claude Codeで副業管理アプリを個人開発した話)","url":"https://note.com/y_taka_dev/n/n2626e2e4e116","impact":"high","tags":["個人開発","AIプログラミング","Claude Code","React Native","副業アプリ"]},{"title":"AI行動支援OS『Addness』のユーザー数が5,000人を突破","summary":"アドネス株式会社が提供するAI行動支援OS「Addness」の登録ユーザー数が5,000人を突破しました。2024年12月の正式リリース以降、フリーランス、個人事業主、学生など幅広い層で導入が進んでいます。このツールは、AIとの対話を通じて目標設定・計画設計・実行管理までを一体的に支援し、「計画立案の億劫さ」を解消する実用的なサービスとして注目されています。個人開発者にとっては、自身の生産性向上ツールとして活用できるほか、AIを活用したSaaS開発の成功事例として参考になります。","source":"PR TIMES (アドネス株式会社)","url":"https://prtimes.jp/main/html/rd/p/000000003.000135898.html","impact":"medium","tags":["AIツール","生産性向上","SaaS","個人事業主","目標管理"]},{"title":"2026年は個人開発が最も活発になる年になる、AI開発ツールの進化が背景に","summary":"2026年に入り、AI開発アシスタント（Cursor、GitHub Copilot、Claude、ChatGPTなど）の使い勝手が劇的に向上し、個人開発が活発化しているとの見解が示されています。AIがコード作成だけでなく、要件定義から実装、エラー解決までをサポートすることで、開発時間が大幅に短縮され、新しい技術の学習コストも低下しています。これにより、多くのエンジニアが個人開発に参入しやすくなっており、インディーハッカーにとって新たなチャンスと挑戦の時代が到来しています。","source":"note (2026年は個人開発が最も活発になる年になる)","url":"https://note.com/k_s_k_dev/n/n4d8c82350849","impact":"high","tags":["個人開発","AI開発アシスタント","開発効率化","インディーハッカー","未来予測"]}]},{"name":"テック全般","icon":"laptop","articles":[{"title":"NTTドコモ、AWS上で5Gコアネットワークの商用運用を開始し、AIエージェントで構築期間を80%短縮","summary":"NTTドコモは、通信事業者としてアジア太平洋地域で初めて、AWSのクラウドサービスと同社の仮想化基盤を組み合わせたハイブリッド環境上で5Gコアネットワークの商用サービスを開始しました。この商用展開では、AIエージェントを活用して5GCの設計・構築を自動化し、構築期間を約80%短縮、障害対応時間を約50%短縮することに成功しています。これは通信インフラのクラウド化とAIによる運用効率化の大きな一歩であり、開発者はAIを活用したインフラ自動化の可能性を再認識する機会となります。","source":"PR TIMES (アマゾンジャパン合同会社)","url":"https://prtimes.jp/main/html/rd/p/000000001.000137350.html","impact":"high","tags":["5G","AWS","クラウドインフラ","AIエージェント","通信技術"]},{"title":"さくらインターネット、実験科学者向けノートアプリ『eureco』のオープンβ版を提供開始","summary":"さくらインターネットは、実験科学者のためのノートアプリケーション「eureco（エウレコ）」のオープンβ版を2026年3月2日より提供開始しました。このアプリは、実験過程で発生する条件、手順、結果、考察に加え、写真やデータなど多岐にわたる情報を一元的に収集・統合し、記録の構造化やデータの一元管理を可能にします。これにより、研究活動における再現性向上とデータ管理の効率化を支援し、研究DXをサポートします。開発者にとっては、特定の専門分野に特化したSaaS開発の事例として参考になります。","source":"さくらインターネット ニュース","url":"https://www.sakura.ad.jp/corporate/news/press/2024/0228-eureco/","impact":"medium","tags":["研究DX","SaaS","データ管理","科学技術","さくらインターネット"]},{"title":"GMOプライム・ストラテジー、教育機関向けにAI自動採点ソリューションを提供開始","summary":"GMOプライム・ストラテジーは、生成AIを活用して試験やレポートの採点業務を自動化するAI自動採点ソリューションを、2026年3月2日より正式に提供開始しました。このソリューションは、IT知識がない方でも「置くだけ、押すだけ」のシンプルな操作で、数百人規模の記述式採点を均一な品質で自動化できる点が特長です。教員の採点業務負担を大幅に削減し、個別指導や授業準備など教育の本質的な質の向上に繋がる時間の創出を支援します。開発者にとっては、教育分野におけるAI活用の新たなビジネスモデルとして注目されます。","source":"GMOプライム・ストラテジー プレスリリース","url":"https://www.gmo-ps.com/news/press/20240228_ai-grading-solution/","impact":"medium","tags":["教育DX","AI採点","生成AI","業務効率化","EdTech"]}]}];
+const ARCHIVE_BASE = './archive/';
+let activeTab = 0;
+
+const ICONS = { robot: '\u{1F916}', rocket: '\u{1F680}', laptop: '\u{1F4BB}' };
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = categories.map((c, i) =>
+    '<button class="tab' + (i === activeTab ? ' active' : '') + '" onclick="switchTab(' + i + ')">' +
+    '<span class="tab-icon">' + (ICONS[c.icon] || '') + '</span>' + c.name + '</button>'
+  ).join('');
+}
+
+function renderArticles(ci) {
+  const cat = categories[ci];
+  if (!cat || !cat.articles || cat.articles.length === 0) {
+    document.getElementById('content').innerHTML = '<div class="empty-state"><p>\u{1F4ED} この日の記事はありません</p></div>';
+    return;
+  }
+
+  const linkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  var html = '<div class="tab-content active">';
+  for (var i = 0; i < cat.articles.length; i++) {
+    var a = cat.articles[i];
+    var ic = 'impact-' + (a.impact || 'medium');
+    var il = (a.impact || 'medium').toUpperCase();
+    if (il === 'MEDIUM') il = 'MID';
+    var tags = '';
+    if (a.tags) {
+      for (var t = 0; t < a.tags.length; t++) {
+        tags += '<span class="tag">' + a.tags[t] + '</span>';
+      }
+    }
+    var link = '';
+    if (a.url && a.url !== '#') {
+      link = '<a href="' + a.url + '" target="_blank" rel="noopener" class="source-link">' + linkIcon + ' \u30BD\u30FC\u30B9\u3092\u8AAD\u3080</a>';
+    }
+    html += '<div class="article">' +
+      '<div class="article-top"><span class="impact-badge ' + ic + '">' + il + '</span><span class="article-source">' + a.source + '</span></div>' +
+      '<h3 class="article-title">' + a.title + '</h3>' +
+      '<p class="article-summary">' + a.summary + '</p>' +
+      '<div class="article-footer"><div class="article-tags">' + tags + '</div>' + link + '</div>' +
+      '</div>';
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function switchTab(i) { activeTab = i; renderTabs(); renderArticles(i); }
+
+function getTodayStr() {
+  var d = new Date();
+  var jst = new Date(d.getTime() + (9 * 3600000) + (d.getTimezoneOffset() * 60000));
+  return jst.toISOString().slice(0, 10);
+}
+
+function initDatePicker() { document.getElementById('datePicker').value = getTodayStr(); }
+
+function navigateDate(delta) {
+  var p = document.getElementById('datePicker');
+  var d = new Date(p.value);
+  d.setDate(d.getDate() + delta);
+  p.value = d.toISOString().slice(0, 10);
+  loadDate(p.value);
+}
+
+function loadDate(ds) {
+  if (ds === getTodayStr()) { window.location.href = './'; return; }
+  window.location.href = ARCHIVE_BASE + ds + '.html';
+}
+
+renderTabs();
+renderArticles(0);
+initDatePicker();
+</script>
 </body>
 </html>
