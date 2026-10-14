@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のテックニュース | 2026年10月14日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f8;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #555568;
+    --text-light: #8888a0;
+    --border: #e4e4ec;
+    --accent: #ff6b35;
+    --accent-hover: #e85d2c;
+    --tag-bg: #f0f0f5;
+    --shadow: 0 1px 8px rgba(0,0,0,0.05);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.09);
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .date-display {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  /* ---- Date nav ---- */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 24px;
+  }
+  .date-nav input[type="date"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .date-nav input[type="date"]:focus { border-color: var(--accent); }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text-sub); background: var(--tag-bg); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,0.25);
+  }
+  .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ---- Article card ---- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.15s;
+    animation: fadeIn 0.35s ease both;
+  }
+  .article:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .article:nth-child(2) { animation-delay: 0.07s; }
+  .article:nth-child(3) { animation-delay: 0.14s; }
+
+  .article-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .impact-badge {
+    padding: 2px 9px;
+    border-radius: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+  .impact-high   { background: #fff0ed; color: #d94432; }
+  .impact-medium { background: #fff8ed; color: #c96d10; }
+  .impact-low    { background: #edf4ff; color: #3578c5; }
+
+  .article-source { font-size: 12px; color: var(--text-light); }
+
+  .article-title {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .article-summary {
+    font-size: 13.5px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .article-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--text-sub);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-link:hover { color: var(--accent-hover); }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-tags { font-size: 13px; color: var(--accent); font-weight: 700; }
+  .footer-info { font-size: 11.5px; color: var(--text-light); margin-top: 4px; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+  .empty-state p { font-size: 14px; margin-top: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 20px 14px 40px; }
+    .article { padding: 18px; }
+    h1 { font-size: 20px; }
+    .tab { font-size: 11px; padding: 9px 4px; }
+    .tab-icon { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-row">
+      <span style="font-size:26px">📰</span>
+      <h1>今日のテックニュース</h1>
+    </div>
+    <div class="date-display">2026年10月14日</div>
+  </header>
+
+  <nav class="date-nav">
+    <button class="date-btn" onclick="navigateDate(-1)">&larr; 前日</button>
+    <input type="date" id="datePicker" onchange="loadDate(this.value)" />
+    <button class="date-btn" onclick="navigateDate(1)">翌日 &rarr;</button>
+  </nav>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
+  <footer>
+    <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
+    <div class="footer-info">Powered by Gemini API &times; GitHub Actions &#x2502; 毎朝 7:00 自動更新</div>
+  </footer>
+</div>
+
+<script>
+const categories = [{"name":"生成AI・LLM","icon":"robot","articles":[{"title":"Google、最上位AIモデル『Gemini 4 Argon』を一般提供開始","summary":"Googleは2026年10月13日、新たな最上位AIモデル「Gemini 4 Argon」の一般提供を開始しました。このモデルは、複雑な推論を長時間継続できることが特徴で、大規模なコード修正や金融・法律文書の分析、科学研究といった専門的なタスクで高い能力を発揮します。開発者や企業、Geminiアプリの有料会員が利用可能となり、AIエージェント開発環境「Google Antigravity」では高度なプログラミングや自律作業が実行できます。API料金は導入価格で100万トークンあたり入力2米ドル、出力10米ドルと設定されており、AI開発の新たな選択肢として注目されます。","source":"note","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHwHCsks4DenB4JBK2R30JmvoeQjhr3qeeW9FTrClS1WvOFDBChOEXs3pvQpaMQnT3ora5-oI3CXQKy1mbtNv725xmULvFajI5aOFGVVbFvCgNvshd0LgKaRtlHgxRc5Mww07TM0tjefQCwf58kfmmD8GrVCl82q8Ugt-c=","impact":"high","tags":["生成AI","LLM","Google Gemini"]},{"title":"Anthropic、AI生成コード急増に対応するため独自コード管理システム『Scion』へ移行","summary":"Anthropicは2026年10月13日、AIエージェントによるコード生成の急増に対応するため、社内コード管理システムをGitから独自開発の「Scion」へ全面移行したことを発表しました。1日あたりのコード変更が3万件を超えるなど、従来のGitベースの開発基盤では処理が追いつかなくなったことが背景にあります。Scionは、常時接続のAIエージェントによる大量の開発作業を前提にコード管理の仕組みそのものを再設計しており、必要なファイルの効率的な取得やサーバー側での変更処理が可能です。この移行は、AIを活用した開発ワークフローの未来を示唆し、開発者にとって新たなコード管理のあり方を考えるきっかけとなるでしょう。","source":"AnthropicがGitを捨てた理由。AIによるコード生成が急増し、独自システム「Scion」へ全面移行","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGaWR0mRsSD5WryEfeUoT1Uq_jouR44L2fILkCMIvzSm175mgMGq_eefRmRUGY7Z7e7R51rv3_FtzPCSGd3PrQ-G-xe5MPQOVtII5urGmHLJuvZxbOD5ZDkYobiO7GDLKTF5xPo4MUrsmZBK73fy_Cii9eqVyJbcNR7vetG","impact":"high","tags":["AI開発","コード管理","Anthropic"]},{"title":"茨木市とNTT西日本、純国産LLM『tsuzumi 2』を活用した小中学校向け校務AI実証を開始","summary":"大阪府茨木市とNTT西日本は2026年10月13日より、純国産プライベートLLM「tsuzumi 2」を活用した小中学校向け校務AIの実証を市立小中学校で開始しました。この取り組みは、教職員の文書業務効率化と、機密性の高い情報を扱う教育現場での生成AI活用の安全性確保を目的としています。比較的低コストなGPUサーバー上で稼働する生成AIアプリケーションを使用し、校務文書の検索・要約や文書作成支援などの機能を提供します。利用者権限に応じたアクセス制御やローカル環境での運用を通じて、安全性と実用性が検証され、地方自治体や教育機関におけるAI導入の具体的な事例として注目されます。","source":"PR TIMES","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFtB0iAwUO6DoOGw2JcucUN_7AFZ99w-tQSioPjDAvuiTkKGFuh_L2pZvfWntZUZw0KTaivpVAWxPKv1RcQrYbZxSAQBg1JWWrzTypd-jjuxsZS_6YMCw1MZSS1qWKmL8bHduWJCJ5f02WpaW0xWl09k48XkdE=","impact":"medium","tags":["国産LLM","教育AI","業務効率化"]}]},{"name":"個人開発・インディーハッカー","icon":"rocket","articles":[{"title":"個人開発者ハリー氏、高校野球の「部長」として甲子園を目指す育成SLG『高校野球マネジメント』iOS版の事前登録を開始","summary":"個人開発者のハリー氏が、高校野球の「部長」となって甲子園の頂点を目指す育成シミュレーションゲーム『高校野球マネジメント』のiPhone版について、2026年10月20日の配信開始に向けてApp Storeで予約受付を開始しました。プレイヤーは監督や選手ではなく部長として、スカウト、部員の育成、学校との交渉などを行います。3年間で選手が入れ替わる高校野球ならではの世代交代を体験できる点が特徴です。価格は基本プレイ無料で、一部アプリ内課金があり、個人開発ゲームの新たな成功事例となるか注目されます。","source":"gamebiz","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGt1EXnrnupX2tv-8B7r5zTzmgacng-H8WZSvloNUzcRJwU6YOGMFciVDJNTbhxpzuiLhsBmUi5UCbc73uvjbhkgy1iM3gmGXXavrbJ_S7GdpPrPTI6exINGg==","impact":"low","tags":["個人開発ゲーム","育成シミュレーション","iOSアプリ"]},{"title":"習慣化アプリ『HabitKit』がASOで月10万ドル（1500万円）を達成するなど、個人開発アプリの成功事例が続出","summary":"2026年10月時点のニュースレターによると、ドイツ人開発者セバスチャン氏の習慣化アプリ「HabitKit」が、App Store検索最適化（ASO）戦略により月10万ドル（約1500万円）の収益を達成しました。また、別の24歳の天才開発者コナー氏は、複数のアプリから合計で年間約6億円もの収益を上げています。これらの事例は、特定のニッチ市場を狙ったアプリ開発や、効果的なASO、あるいは複数のプロダクトを展開する戦略が、個人開発者にとって大きな収益源となり得ることを示しています。これは、個人開発者にとって大きなモチベーションと具体的な成功戦略のヒントとなるでしょう。","source":"みんなのニュースレター","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEHN3KXyfr7td_cMpDOAk5gNS0F45PDs78S906kqPy_cPo8ZHwJGwcuGLjaRdfbXSUERuZXrc5yKc7XRVrMGDKgNZHYtkuffbG8m1PT0LtmimtRN-38IQQwRuXC","impact":"high","tags":["個人開発","ASO","アプリ収益化"]},{"title":"umoren.ai、自社サイトがAI学習データに含まれているか確認できる無料ツール『AI事前学習データチェッカー（Common Crawl）』を公開","summary":"Queue株式会社（umoren.ai）は2026年10月14日、Webサイトが大規模言語モデル（LLM）の学習データ収集元である「Common Crawl」に保存されているかを確認できる無料ツールを公開しました。URLを入力するだけで、2008年からのクロール記録、robots.txtによるAIボットのブロック状況、Cloudflareなどのアクセス制限、保存されたHTMLの内容まで可視化できます。これは、個人開発者や企業がAI検索対策（LLMO）の基礎診断を行い、「AIに自社の情報がどのように認識されているか」を把握するための実用的なツールとなります。AI時代におけるWebサイト運営の新たな課題に対応する重要な一歩です。","source":"PR TIMES","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFJ1NXmDdl57zhwQtgH3dDYR4ppEvCrxEv6l32tr6frxeY6H7QNZas8NiomoMYnjwzR1GknpSP0MlAc9Y1oiAyNtch1GyirxI16sZdnIIxY316aOFxrgg5jbcK0U5nuu73yjQYwhoQp454OmDIXfeiHbGjZn7w=","impact":"medium","tags":["AI学習データ","Webサイト運営","無料ツール"]}]},{"name":"テック全般","icon":"laptop","articles":[{"title":"IDTechExが『モバイルロボット、自動運転車、ドローン 2026-2046年』調査レポートをリリース","summary":"IDTechExは2026年10月7日、物流、倉庫、配送に使用されるモバイルロボット、自動運転車、ドローンに関する最新調査レポートをリリースしました。このレポートでは、イントラロジスティクスにおける搬送、モバイルピッキング、自律型ラストマイル配送、レベル4の大型自動運転トラックといった主要なアプリケーショングループを分析し、2046年までの市場予測を提供しています。市場全体の年間売上高は2026年の148億ドルから2046年には2,336億ドルに拡大すると予測されており、物流分野における自動化技術の導入が今後20年間で劇的に加速することを示唆しています。これは、関連技術の開発者や投資家にとって重要な市場動向情報となるでしょう。","source":"ドリームニュース","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFiANtDBE8CoaAl4j9vAKnvwGtaWuqh7M6yXH02u6qWHUkVOIWxw-6usCM5uQKvTWgjOvyfIqRAR0kLu-psqz8RgT8ilwjJlsyI_I1HuqGYScpHki3KIySsVbjwsP5Sg_0M4hUv","impact":"high","tags":["モバイルロボット","自動運転","ドローン"]},{"title":"テスラ、自動運転FSDを『TAD（Tesla Assisted Driving）』に名称変更","summary":"テスラは2026年10月14日、自動運転機能「Full Self-Driving（FSD）」の名称を「Tesla Assisted Driving（TAD）」に変更すると発表しました。これは、完全自動運転ではなく運転支援システムであることを明確にするための変更であり、各国の規制やユーザーの認識に合わせた動きと見られます。自動運転技術の進化と同時に、その呼称や責任範囲に関する社会的な議論が活発化している現状を反映しています。この名称変更は、自動運転技術の法規制や倫理的側面が開発に与える影響を示す事例となるでしょう。","source":"テスラ 自動運転FSDをTAD（Tesla Assisted Driving）に名称変更 運転支援という意味を明確に","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHruRQyaU9pVYF6mXic55tT6V3KxW0nVBVhXLnLuLSS6AsfEU-sEnIDef6NJDagwStchn0jW5v3fmzx8VhajEoxt3X8_1shGlYzWP4qGvhk2JzAG4H6jQeHQdNqrQ==","impact":"medium","tags":["自動運転","テスラ","規制対応"]},{"title":"Gartnerが2026年の戦略的テクノロジートレンドを発表、『AIネイティブ開発プラットフォーム』や『マルチエージェントシステム』が重要に","summary":"Gartnerは2025年10月に発表した「2026年の戦略的テクノロジートレンドTop 10」において、AIが「選択肢」ではなく「前提条件」となる中で、企業がレジリエントな基盤を構築し、インテリジェントなシステムを統合し、企業価値を守るための不可欠なツールであると強調しました。特に「AIネイティブ開発プラットフォーム」は、AIを開発ライフサイクルの中核エンジンとして据え、要件定義からデプロイまでをAIエージェントが自律的に実行する世界観を示唆しています。また、「マルチエージェントシステム」は、複数のAIが連携して複雑な業務プロセス全体を自動化する新しい価値創出のアプローチとして注目されており、開発者にとって今後の技術戦略を考える上で非常に重要な指針となります。","source":"SotaTek","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHv7Ry3ISOkQDf3TFsIAOiBtelUzUwVA9nDSCF4L-tMHFqB5iZNtavGGjMDVn49y-vOrSvii962cybc5hKJyLH7OBGFhWQ-H78uJWfSDhYmqWh91IORcdHIf_ywdElb2DkMGV4yvQtALPtefQ==","impact":"high","tags":["テクノロジートレンド","AIネイティブ","マルチエージェント"]}]}];
+const ARCHIVE_BASE = './archive/';
+let activeTab = 0;
+
+const ICONS = { robot: '\u{1F916}', rocket: '\u{1F680}', laptop: '\u{1F4BB}' };
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = categories.map((c, i) =>
+    '<button class="tab' + (i === activeTab ? ' active' : '') + '" onclick="switchTab(' + i + ')">' +
+    '<span class="tab-icon">' + (ICONS[c.icon] || '') + '</span>' + c.name + '</button>'
+  ).join('');
+}
+
+function renderArticles(ci) {
+  const cat = categories[ci];
+  if (!cat || !cat.articles || cat.articles.length === 0) {
+    document.getElementById('content').innerHTML = '<div class="empty-state"><p>\u{1F4ED} この日の記事はありません</p></div>';
+    return;
+  }
+
+  const linkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  var html = '<div class="tab-content active">';
+  for (var i = 0; i < cat.articles.length; i++) {
+    var a = cat.articles[i];
+    var ic = 'impact-' + (a.impact || 'medium');
+    var il = (a.impact || 'medium').toUpperCase();
+    if (il === 'MEDIUM') il = 'MID';
+    var tags = '';
+    if (a.tags) {
+      for (var t = 0; t < a.tags.length; t++) {
+        tags += '<span class="tag">' + a.tags[t] + '</span>';
+      }
+    }
+    var link = '';
+    if (a.url && a.url !== '#') {
+      link = '<a href="' + a.url + '" target="_blank" rel="noopener" class="source-link">' + linkIcon + ' \u30BD\u30FC\u30B9\u3092\u8AAD\u3080</a>';
+    }
+    html += '<div class="article">' +
+      '<div class="article-top"><span class="impact-badge ' + ic + '">' + il + '</span><span class="article-source">' + a.source + '</span></div>' +
+      '<h3 class="article-title">' + a.title + '</h3>' +
+      '<p class="article-summary">' + a.summary + '</p>' +
+      '<div class="article-footer"><div class="article-tags">' + tags + '</div>' + link + '</div>' +
+      '</div>';
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function switchTab(i) { activeTab = i; renderTabs(); renderArticles(i); }
+
+function getTodayStr() {
+  var d = new Date();
+  var jst = new Date(d.getTime() + (9 * 3600000) + (d.getTimezoneOffset() * 60000));
+  return jst.toISOString().slice(0, 10);
+}
+
+function initDatePicker() { document.getElementById('datePicker').value = getTodayStr(); }
+
+function navigateDate(delta) {
+  var p = document.getElementById('datePicker');
+  var d = new Date(p.value);
+  d.setDate(d.getDate() + delta);
+  p.value = d.toISOString().slice(0, 10);
+  loadDate(p.value);
+}
+
+function loadDate(ds) {
+  if (ds === getTodayStr()) { window.location.href = './'; return; }
+  window.location.href = ARCHIVE_BASE + ds + '.html';
+}
+
+renderTabs();
+renderArticles(0);
+initDatePicker();
+</script>
+</body>
+</html>
