@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のテックニュース | 2026年10月15日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f8;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #555568;
+    --text-light: #8888a0;
+    --border: #e4e4ec;
+    --accent: #ff6b35;
+    --accent-hover: #e85d2c;
+    --tag-bg: #f0f0f5;
+    --shadow: 0 1px 8px rgba(0,0,0,0.05);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.09);
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .date-display {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  /* ---- Date nav ---- */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 24px;
+  }
+  .date-nav input[type="date"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .date-nav input[type="date"]:focus { border-color: var(--accent); }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text-sub); background: var(--tag-bg); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,0.25);
+  }
+  .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ---- Article card ---- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.15s;
+    animation: fadeIn 0.35s ease both;
+  }
+  .article:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .article:nth-child(2) { animation-delay: 0.07s; }
+  .article:nth-child(3) { animation-delay: 0.14s; }
+
+  .article-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .impact-badge {
+    padding: 2px 9px;
+    border-radius: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+  .impact-high   { background: #fff0ed; color: #d94432; }
+  .impact-medium { background: #fff8ed; color: #c96d10; }
+  .impact-low    { background: #edf4ff; color: #3578c5; }
+
+  .article-source { font-size: 12px; color: var(--text-light); }
+
+  .article-title {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .article-summary {
+    font-size: 13.5px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .article-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--text-sub);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-link:hover { color: var(--accent-hover); }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-tags { font-size: 13px; color: var(--accent); font-weight: 700; }
+  .footer-info { font-size: 11.5px; color: var(--text-light); margin-top: 4px; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+  .empty-state p { font-size: 14px; margin-top: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 20px 14px 40px; }
+    .article { padding: 18px; }
+    h1 { font-size: 20px; }
+    .tab { font-size: 11px; padding: 9px 4px; }
+    .tab-icon { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-row">
+      <span style="font-size:26px">📰</span>
+      <h1>今日のテックニュース</h1>
+    </div>
+    <div class="date-display">2026年10月15日</div>
+  </header>
+
+  <nav class="date-nav">
+    <button class="date-btn" onclick="navigateDate(-1)">&larr; 前日</button>
+    <input type="date" id="datePicker" onchange="loadDate(this.value)" />
+    <button class="date-btn" onclick="navigateDate(1)">翌日 &rarr;</button>
+  </nav>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
+  <footer>
+    <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
+    <div class="footer-info">Powered by Gemini API &times; GitHub Actions &#x2502; 毎朝 7:00 自動更新</div>
+  </footer>
+</div>
+
+<script>
+const categories = [{"name":"生成AI・LLM","icon":"robot","articles":[{"title":"Google、最上位モデル「Gemini 4 Argon」を一般展開","summary":"Googleは、同社の最上位生成AIモデル「Gemini 4 Argon」をGeminiアプリのAI ProプランおよびAI検索モードに一般展開しました。これにより、個人ユーザーも追加料金なしで高性能AIを利用できるようになります。Gemini 4 Argonは最大100万トークンの一括出力に対応し、金融、法務、コーディング分野の評価指標「Vals Index」で第1位を獲得しています。長文の契約書解析や複雑な質問応答など、高度なナレッジワークやコーディング作業に活用でき、API利用の開発者は2026年12月以降の価格引き上げに注意し、コスト最適化を検討する必要があります。","source":"TECH NOISY, Qiita","url":"https://www.google.com/search?q=Google+Gemini+4+Argon+一般展開","impact":"high","tags":["生成AI","LLM","Google Gemini","API価格"]},{"title":"OpenAI、GPT-5.5を退役させGPT-6.1 Solへ移行、GPT-4廃止も予告","summary":"OpenAIは、ChatGPT、ChatGPT Work、Codexなどのサービスから「GPT-5.5」モデルを全プランで退役させ、「GPT-5.6 Sol」への移行を進めています。さらに、OpenAI APIで提供されている「GPT-4o」と「GPT-4.1」についても、2027年1月14日に廃止し、後継モデルとして「gpt-6-luna」を推奨すると予告しました。現在GPT-4oやGPT-4.1を利用している開発者や企業は、期日までにアプリケーションを後継モデルへ移行する必要があります。この新モデルへの移行は、多くの場合APIコストの削減にもつながるとされています。","source":"TECH NOISY","url":"https://www.google.com/search?q=OpenAI+GPT-5.5+GPT-6.1+Sol+GPT-4+廃止","impact":"high","tags":["OpenAI","GPT","API移行","LLM"]},{"title":"NTT西日本と茨木市、純国産LLM「tsuzumi 2」を活用した小中学校向け校務AI実証を開始","summary":"大阪府茨木市とNTT西日本は、純国産プライベートLLM「tsuzumi 2」を活用した小中学校向け校務AIの実証実験を市立の一部小中学校で開始しました。この実証は、教育分野に特化したオンプレミス環境の生成AIアプリケーションを用いて、校務文書の検索・要約や文書作成支援を行い、その有効性、安全性、操作性を検証するものです。機密性の高い情報を扱う教育現場において、純国産LLMをオンプレミスで運用することで、データの安全性とプライバシーを確保しつつ、教職員の業務効率化を図る具体的なアプローチとして注目されます。","source":"リシード, AI Watch, PR TIMES","url":"https://www.google.com/search?q=NTT西日本+茨木市+tsuzumi+2+校務AI","impact":"medium","tags":["純国産LLM","教育DX","オンプレミスAI","NTT"]}]},{"name":"個人開発・インディーハッカー","icon":"rocket","articles":[{"title":"『ひとりビジネスのためのAIエージェント活用術』が10月16日に発売","summary":"ひとり社長、個人起業家、フリーランスといった個人事業主向けに、AIエージェントを自分専用の「AIチーム」として活用する方法を解説する書籍が、2026年10月16日に株式会社インプレスより発売されます。本書は、AIに相談するところから、日々の実務を任せ、繰り返す作業を仕組み化するまでの具体的な手順を、専門的な開発経験がない方でも実践できるよう解説しています。営業、情報発信、顧客対応、経理などの周辺業務に時間を取られがちな個人事業主が、AIエージェントを導入することで、本業や売上につながる活動に集中できる方法が学べます。非エンジニアでもAIを使いこなすための実践的なノウハウが期待されます。","source":"株式会社インプレス","url":"https://www.google.com/search?q=ひとりビジネスのためのAIエージェント活用術+インプレス","impact":"medium","tags":["AIエージェント","ひとりビジネス","業務効率化","書籍"]},{"title":"習慣化アプリ「HabitKit」がASOで月間10万ドル超えの収益を達成","summary":"ドイツ人開発者セバスチャン氏が手掛ける習慣化アプリ「HabitKit」が、App Store検索（ASO: App Store Optimization）のみで年間9000万円を稼ぎ出し、2026年1月には月間10万ドル（約1500万円）を超える収益を達成しました。激戦区である習慣化アプリ市場において、後発ながら徹底したASO戦略により成功を収めた事例として注目されています。個人開発者がニッチな市場でアプリを成功させるためには、アプリストア内での可視性を高めるASOが極めて重要であることを示しています。アプリ開発者は、キーワード選定、スクリーンショット、アプリ説明文の最適化など、ASOの各要素に力を入れることで、ダウンロード数と収益の向上を目指せます。","source":"みんなのニュースレター","url":"https://www.google.com/search?q=HabitKit+ASO+月間10万ドル","impact":"high","tags":["個人開発","ASO","アプリ収益化","習慣化アプリ"]},{"title":"構想10年の個人開発RPG『魔界都市CHI-BA』Steam版が11月2日発売","summary":"「こゆるぎ工房」の長堀禎之氏が、構想から10年の歳月をかけて完全一人で開発した千葉県の歴史・地名・民話を題材とするRPG『魔界都市CHI-BA』のSteam版が、2026年11月2日に発売されることが発表されました。Steam版では、フナバシ、モバラ、カシワといった新たな街やエクストラダンジョンが追加された「完全版」として登場し、英語ローカライズにも対応することで海外プレイヤーもターゲットにしています。長期にわたる情熱と努力が、個人開発のインディーゲームを商業プラットフォームで成功に導く可能性を示しています。地域に特化したユニークなテーマ設定や、海外展開を見据えたローカライズは、他のインディーゲーム開発者にとって参考になる戦略です。","source":"ファミ通.com","url":"https://www.google.com/search?q=魔界都市CHI-BA+Steam版+発売","impact":"medium","tags":["インディーゲーム","個人開発","RPG","Steam"]}]},{"name":"テック全般","icon":"laptop","articles":[{"title":"KDDI、「分散型AI」で通信エリアの自律最適化に成功","summary":"KDDIとKDDI総合研究所は、複数のAIが連携する「分散型AI」を活用し、混雑状況の時間変化に合わせて通信エリアを自律的に最適化する技術の実証に成功しました。この実証では、混雑時間帯における上り通信速度を平均約60％向上させ、低速度エリアを約30％削減できることが確認されています。AIがネットワークインフラを自律的に制御することで、ユーザーは通信が混雑する時間帯でも安定した高速通信を利用できるようになります。特に、写真や動画のアップロード、Web会議、ビデオ通話などの品質向上が期待され、5G/6G時代における通信サービスの基盤技術として重要です。","source":"KDDI ニュースルーム","url":"https://www.google.com/search?q=KDDI+分散型AI+通信エリア+自律最適化","impact":"high","tags":["分散型AI","通信技術","ネットワーク最適化","KDDI"]},{"title":"AI悪用サイバー攻撃に対抗する「自律型サイバーセキュリティ」が注目","summary":"AIを悪用した高速かつ大規模なサイバー攻撃の脅威が増大する中、「AIによる防御」すなわち自律型サイバーセキュリティが世界的に注目されています。中国の通信機器大手ファーウェイはAIエージェントを活用した自律型の防御システムを開発しており、数秒単位での脅威検知・対応が可能とされています。国際ハッカー集団QilinがAIをサイバー攻撃に利用している事例も報告されており、AIによる攻防が激化している状況です。企業や組織は、AIを活用したサイバー攻撃から自社を守るため、AIによる防御システムの導入を検討するとともに、従業員向けのAIガバナンス研修や利用ガイドラインの策定を急ぐ必要があります。","source":"ライブドアニュース","url":"https://www.google.com/search?q=AI悪用サイバー攻撃+自律型サイバーセキュリティ","impact":"high","tags":["サイバーセキュリティ","AI防御","AI攻撃","情報セキュリティ"]},{"title":"ホテルOSシステム「WASIMIL」がAIエージェント化を加速、累計4.9億円を調達","summary":"ホテルOSシステム「WASIMIL（ワシミル）」を提供する株式会社AZOOは、シリーズAラウンドで累計4.9億円を調達し、WASIMILのAIエージェント化を加速させると発表しました。この資金調達を契機に、AIが宿泊バックオフィス業務の自動処理を行う新しい宿泊運営モデルの構築を目指します。宿泊業界では需要が史上最高水準にある一方で、構造的な人手不足という課題を抱えており、AIによる業務効率化が急務となっています。人手不足が深刻な宿泊業界において、AIエージェントが予約管理、顧客対応、経理などのバックオフィス業務を自動化することで、従業員の負担を軽減し、サービス品質の向上に貢献します。","source":"PR TIMES","url":"https://www.google.com/search?q=ホテルOSシステム+WASIMIL+AIエージェント化","impact":"medium","tags":["ホテルテック","AIエージェント","業務自動化","DX"]}]}];
+const ARCHIVE_BASE = './archive/';
+let activeTab = 0;
+
+const ICONS = { robot: '\u{1F916}', rocket: '\u{1F680}', laptop: '\u{1F4BB}' };
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = categories.map((c, i) =>
+    '<button class="tab' + (i === activeTab ? ' active' : '') + '" onclick="switchTab(' + i + ')">' +
+    '<span class="tab-icon">' + (ICONS[c.icon] || '') + '</span>' + c.name + '</button>'
+  ).join('');
+}
+
+function renderArticles(ci) {
+  const cat = categories[ci];
+  if (!cat || !cat.articles || cat.articles.length === 0) {
+    document.getElementById('content').innerHTML = '<div class="empty-state"><p>\u{1F4ED} この日の記事はありません</p></div>';
+    return;
+  }
+
+  const linkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  var html = '<div class="tab-content active">';
+  for (var i = 0; i < cat.articles.length; i++) {
+    var a = cat.articles[i];
+    var ic = 'impact-' + (a.impact || 'medium');
+    var il = (a.impact || 'medium').toUpperCase();
+    if (il === 'MEDIUM') il = 'MID';
+    var tags = '';
+    if (a.tags) {
+      for (var t = 0; t < a.tags.length; t++) {
+        tags += '<span class="tag">' + a.tags[t] + '</span>';
+      }
+    }
+    var link = '';
+    if (a.url && a.url !== '#') {
+      link = '<a href="' + a.url + '" target="_blank" rel="noopener" class="source-link">' + linkIcon + ' \u30BD\u30FC\u30B9\u3092\u8AAD\u3080</a>';
+    }
+    html += '<div class="article">' +
+      '<div class="article-top"><span class="impact-badge ' + ic + '">' + il + '</span><span class="article-source">' + a.source + '</span></div>' +
+      '<h3 class="article-title">' + a.title + '</h3>' +
+      '<p class="article-summary">' + a.summary + '</p>' +
+      '<div class="article-footer"><div class="article-tags">' + tags + '</div>' + link + '</div>' +
+      '</div>';
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function switchTab(i) { activeTab = i; renderTabs(); renderArticles(i); }
+
+function getTodayStr() {
+  var d = new Date();
+  var jst = new Date(d.getTime() + (9 * 3600000) + (d.getTimezoneOffset() * 60000));
+  return jst.toISOString().slice(0, 10);
+}
+
+function initDatePicker() { document.getElementById('datePicker').value = getTodayStr(); }
+
+function navigateDate(delta) {
+  var p = document.getElementById('datePicker');
+  var d = new Date(p.value);
+  d.setDate(d.getDate() + delta);
+  p.value = d.toISOString().slice(0, 10);
+  loadDate(p.value);
+}
+
+function loadDate(ds) {
+  if (ds === getTodayStr()) { window.location.href = './'; return; }
+  window.location.href = ARCHIVE_BASE + ds + '.html';
+}
+
+renderTabs();
+renderArticles(0);
+initDatePicker();
+</script>
+</body>
+</html>
