@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のテックニュース | 2026年10月26日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f8;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #555568;
+    --text-light: #8888a0;
+    --border: #e4e4ec;
+    --accent: #ff6b35;
+    --accent-hover: #e85d2c;
+    --tag-bg: #f0f0f5;
+    --shadow: 0 1px 8px rgba(0,0,0,0.05);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.09);
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .date-display {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  /* ---- Date nav ---- */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 24px;
+  }
+  .date-nav input[type="date"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .date-nav input[type="date"]:focus { border-color: var(--accent); }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text-sub); background: var(--tag-bg); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,0.25);
+  }
+  .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ---- Article card ---- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.15s;
+    animation: fadeIn 0.35s ease both;
+  }
+  .article:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .article:nth-child(2) { animation-delay: 0.07s; }
+  .article:nth-child(3) { animation-delay: 0.14s; }
+
+  .article-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .impact-badge {
+    padding: 2px 9px;
+    border-radius: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+  .impact-high   { background: #fff0ed; color: #d94432; }
+  .impact-medium { background: #fff8ed; color: #c96d10; }
+  .impact-low    { background: #edf4ff; color: #3578c5; }
+
+  .article-source { font-size: 12px; color: var(--text-light); }
+
+  .article-title {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .article-summary {
+    font-size: 13.5px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .article-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--text-sub);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-link:hover { color: var(--accent-hover); }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-tags { font-size: 13px; color: var(--accent); font-weight: 700; }
+  .footer-info { font-size: 11.5px; color: var(--text-light); margin-top: 4px; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+  .empty-state p { font-size: 14px; margin-top: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 20px 14px 40px; }
+    .article { padding: 18px; }
+    h1 { font-size: 20px; }
+    .tab { font-size: 11px; padding: 9px 4px; }
+    .tab-icon { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-row">
+      <span style="font-size:26px">📰</span>
+      <h1>今日のテックニュース</h1>
+    </div>
+    <div class="date-display">2026年10月26日</div>
+  </header>
+
+  <nav class="date-nav">
+    <button class="date-btn" onclick="navigateDate(-1)">&larr; 前日</button>
+    <input type="date" id="datePicker" onchange="loadDate(this.value)" />
+    <button class="date-btn" onclick="navigateDate(1)">翌日 &rarr;</button>
+  </nav>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
+  <footer>
+    <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
+    <div class="footer-info">Powered by Gemini API &times; GitHub Actions &#x2502; 毎朝 7:00 自動更新</div>
+  </footer>
+</div>
+
+<script>
+const categories = [{"name":"生成AI・LLM","icon":"robot","articles":[{"title":"「OpenAIとGoogle Cloudが戦略的提携、Model GardenにGPT-6とCodexを導入」","summary":"2026年10月21日、OpenAIとGoogle Cloudは戦略的提携を発表し、Google CloudのAI開発プラットフォーム「Model Garden」にOpenAIのフロンティアモデルであるGPT-6とCodex、およびエージェント開発環境が導入されます。この提携は、AI業界における競争と協力の新たな局面を示し、開発者はマルチクラウド環境でOpenAIの最先端モデルを利用できるようになります。これにより、AIモデルの選択肢が広がり、より多様なアプリケーション開発が促進されるでしょう。特に、最先端モデルへのアクセスが容易になることで、開発効率とイノベーションが加速すると期待されます。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHQiEt5o5tc7kBRHDiP_d8Du-P9tCIMdWxnU9-Z66827C_2mJCTCGcWEylI6WQA7cUHXBy0rUQ9NXmQD-GA94v-hNuHgfQ2krX1c_ZftzUNjl9JIO2Giddrr0oPuCOQ_3iPs_H-","impact":"high","tags":["生成AI","クラウドAI","提携"]},{"title":"「Metaが初のフロンティアモデル『Muse Wonder』を発表、個人向け超知能の実現へ」","summary":"Metaは10月12日、同社初の最上位フロンティアモデル『Muse Wonder（ミューズ・ワンダー）』を発表しました。これは、個人向け超知能（Personal Superintelligence）の実現に向けた基盤としてリリースされ、Meta Model APIおよび開発者向けツール『Muse Code』を通じて提供されます。特に『Active Memory』機能は、過去の会話やプロジェクトの文脈を長期間保持し、必要な情報を自律的に想起・参照することで、より高度なエージェント開発を可能にします。このモデルは、個人の生産性向上と新たなAIアプリケーションの創出に大きく貢献するでしょう。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHQiEt5o5tc7kBRHDiP_d8Du-P9tCIMdWxnU9-Z66827C_2mJCTCGcWEylI6WQA7cUHXBy0rUQ9NXmQD-GA94v-hNuHgfQ2krX1c_ZftzUNjl9JIO2Giddrr0oPuCOQ_3iPs_H-","impact":"high","tags":["Meta","フロンティアモデル","個人AI"]},{"title":"「Google DeepMindが次世代モデル『Gemini 4 Argon』を発表、エクサベース AIが提供開始」","summary":"Google DeepMindは9月30日に次世代『Gemini 4』世代の最初のフロンティアモデルとなる『Gemini 4 Argon（ジェミニ 4 アルゴン）』を発表しました。これを受けて、株式会社Exa Enterprise AIは10月26日、法人向け生成AIサービス『エクサベース AI』において『Gemini 4 Argon』の提供を開始しました。このモデルは、複数ステップにわたる長時間の複雑な作業でも深い推論を保ち、コーディングや法務・金融分野などの専門的な業務に適しています。開発者は、長い動画やグラフの内容理解、従来より長い文章の出力に対応するこのモデルを活用し、より複雑で専門的なAIソリューションを構築できるようになります。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHQiEt5o5tc7kBRHDiP_d8Du-P9tCIMdWxnU9-Z66827C_2mJCTCGcWEylI6WQA7cUHXBy0rUQ9NXmQD-GA94v-hNuHgfQ2krX1c_ZftzUNjl9JIO2Giddrr0oPuCOQ_3iPs_H-","impact":"high","tags":["Google AI","Gemini","法人AI"]}]},{"name":"個人開発・インディーハッカー","icon":"rocket","articles":[{"title":"「AIによるゲームコピーの脅威、インディーゲーム開発者が無料体験版公開を中止」","summary":"AIコーディングツールの進化により、新作ゲームのリリース直後にAIによるコピーゲームが登場したり、体験版公開前にAIが類似ゲームを作成したりする問題が深刻化しています。実際に、あるゲーム開発者はこの問題を懸念し、予定していた体験版のリリースを中止しました。これは、インディーゲーム開発者にとって作品を公開する意欲を削ぎ、コンセプトの盗用リスクを高める大きな課題となっています。開発者は、自身のアイデアや労力が容易に模倣されることへの対策を迫られており、今後のゲーム開発エコシステムに大きな影響を与える可能性があります。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGjPh2CjYhD7dRzw0UYq16oCF2HVtnSycjJF4dvejAKWIHPqUHZQ4CgAsT0WafWtpBORnkKHTckllc98grK016iWmzjoe-ZlqRjqzmbM16cZLiEKXWSq5V6z1RqanQ07DRDC5IGU8CLtdsOUz9o","impact":"high","tags":["インディーゲーム","AIコピー","著作権"]},{"title":"「Ikotas LabsがPwn2Own Ireland 2026でMaster of Pwnを獲得、Google Pixel 10などを遠隔操作」","summary":"株式会社Ikotas Labsが、世界最高峰のハッキングコンテスト『Pwn2Own Ireland 2026』で、日本企業として初めて『Master of Pwn』の称号を獲得しました。同社はGoogle Pixel 10、Samsung Galaxy S26、OpenAI Codex、Oracle Autonomous AI Databaseを含む4製品で計13件の未公開ゼロデイ脆弱性を実証し、総額361,000ドルの賞金を獲得しました。特にGoogle Pixel 10とSamsung Galaxy S26では、攻撃者が用意したリンクを開くことでスマートフォンを遠隔操作できることを実演し、その技術力の高さを示しました。この成果は、サイバーセキュリティ分野における日本の技術力の高さを世界に示し、個人開発者や企業がセキュリティ対策の重要性を再認識するきっかけとなるでしょう。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFh8jREzoTfGQmQajrdlHY7uZEtTv6ECU1tdjJeD-IGxe6khkZZ8XbVTlrv_2txBKgEzMx5LhtfOSQj9mTW1Bv_Y2khCUfB9AgUK724uf-2DBq-bM8gD4Ec2Nr3VzfDhtdZVt_B1P9E5S04zhbMJ4uT0ww5wMQ=","impact":"medium","tags":["サイバーセキュリティ","脆弱性","Pwn2Own"]},{"title":"「AI時代のコードセキュリティ：QED ScriptがAI生成コードの安全性を機械的に検証」","summary":"AIがコード生成を加速する一方で、悪意なく危険な設定やコードを生み出すリスクが増大しています。これに対し、開発中の『QED Script』は、不要な権限を持たない制限付き環境で動作する仕組みを提案しています。AI自身にコードと証明を作らせ、独立した検証器で機械的に検査することで、AIを信用せずとも安全性を担保することを目指しており、個人開発者がAIを活用する上でのセキュリティ課題解決に貢献する可能性があります。この技術は、AI生成コードの信頼性を高め、開発者がより安心してAIツールを利用できる未来を切り開くでしょう。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHlRyZ5x3MFTXvm9C8ANOj7aUtKSQVUzNupy7sj9BGK1-0tMFTorY1L1qu-Edeuiuy6m6vKTEaiblx62zM7JslAWCqWvyorwou2YWQspqFn13mvEgVfNCm2N5rjzfAUUU40yWA9OI3qHbiuAVgqkOTp","impact":"high","tags":["AIコード","セキュリティ","検証ツール"]}]},{"name":"テック全般","icon":"laptop","articles":[{"title":"「生成AI普及に伴う光通信需要拡大に対応、三菱マテリアルがサーミスタ生産能力を6倍に増強」","summary":"生成AIの普及により高速・大容量通信の需要が拡大する中、三菱マテリアル株式会社は、光トランシーバの安定動作を支える温度センサー『フレークサーミスタ（VHシリーズ）』の生産能力を6倍に増強することを決定しました。これは、AIデータセンターなどでの光通信需要の急増に対応するための重要なインフラ投資であり、AI時代の通信基盤を支える動きとして注目されます。この増強は、AI技術の発展をハードウェア面から支え、データ通信の安定性と効率性を向上させることで、間接的に開発者やユーザーのAI利用体験を向上させるでしょう。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEaAcv0Wxz1FIl3J1FhCXye6SqHTo7FE4zyPhVpwFIOQmYzfOHqqP_mo-VIqk8UaPRilsh9uIhZUvBz1ajLxVTZHISlpNZT24GQZUYZV1x5dZQbWtFCrKoKS2jq8ksX-SznQBoByuwGfVjI0xEE7HVIc_trGu18qCfjCZ8EL3IWbA==","impact":"medium","tags":["AIインフラ","光通信","半導体"]},{"title":"「マイクロソフト、アルファベット、アマゾンが決算発表、AI投資の回収とクラウドの伸びに焦点」","summary":"マイクロソフトとアルファベットが10月28日、アマゾンが29日（いずれも米国時間）に、2026年7～9月期の決算を発表します。これらの決算では、各社がこれまで行ってきたAIへの巨額投資がどのように収益に結びついているか、そしてクラウド部門の成長がどれだけ続いているかに焦点が当てられます。AI関連事業の具体的な数字や今後の見通しは、今後のテック業界全体の動向を占う上で重要な指標となります。これらの企業の業績は、AI技術の商業的成功と市場の方向性を示唆し、開発者にとっては将来のプラットフォーム選択や技術トレンドを予測する上で重要な情報となるでしょう。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFOtWtY8WIQ4h-7PgKTHrNOBxcGeBCqvafpYOmejO3LPdQV3V5pJX9m0Zs3uNc8dS6AUou2vHrRGQ7OgAmRL17g_8xB7mvWqEVnOIFKwyDNzV43FI3uYYu0D9HFFGCwUqWkHa2b","impact":"high","tags":["決算発表","AI投資","クラウド市場"]},{"title":"「『Black October』危機：PHPの深刻な脆弱性とAIエージェントによるサイバー攻防」","summary":"2026年10月は、AIがインターネットの基盤技術であるPHPの深刻な脆弱性を暴き出し、直後にAIエージェントを用いた大規模なサイバー攻防へ発展した『Black October』危機に見舞われました。この危機では、PHPの脆弱性に対し、多くの日本企業がサイトを一時停止して対応した一方、米国企業は高度な防衛体制や官民連携を活かしてサービスを維持したまま修正を進めるなど、日米で対応の差が浮き彫りとなりました。クラウドフレアのCEOは、今後数週間から数カ月でPHPと同等以上に深刻なソフトウェアの脆弱性が公表される可能性が高いと警告しており、開発者はセキュリティ対策の強化とAIを活用した防御策の導入を急ぐ必要があります。","source":"ニュース情報","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHQiEt5o5tc7kBRHDiP_d8Du-P9tCIMdWxnU9-Z66827C_2mJCTCGcWEylI6WQA7cUHXBy0rUQ9NXmQD-GA94v-hNuHgfQ2krX1c_ZftzUNjl9JIO2Giddrr0oPuCOQ_3iPs_H-","impact":"high","tags":["サイバー攻撃","PHP脆弱性","AIセキュリティ"]}]}];
+const ARCHIVE_BASE = './archive/';
+let activeTab = 0;
+
+const ICONS = { robot: '\u{1F916}', rocket: '\u{1F680}', laptop: '\u{1F4BB}' };
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = categories.map((c, i) =>
+    '<button class="tab' + (i === activeTab ? ' active' : '') + '" onclick="switchTab(' + i + ')">' +
+    '<span class="tab-icon">' + (ICONS[c.icon] || '') + '</span>' + c.name + '</button>'
+  ).join('');
+}
+
+function renderArticles(ci) {
+  const cat = categories[ci];
+  if (!cat || !cat.articles || cat.articles.length === 0) {
+    document.getElementById('content').innerHTML = '<div class="empty-state"><p>\u{1F4ED} この日の記事はありません</p></div>';
+    return;
+  }
+
+  const linkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  var html = '<div class="tab-content active">';
+  for (var i = 0; i < cat.articles.length; i++) {
+    var a = cat.articles[i];
+    var ic = 'impact-' + (a.impact || 'medium');
+    var il = (a.impact || 'medium').toUpperCase();
+    if (il === 'MEDIUM') il = 'MID';
+    var tags = '';
+    if (a.tags) {
+      for (var t = 0; t < a.tags.length; t++) {
+        tags += '<span class="tag">' + a.tags[t] + '</span>';
+      }
+    }
+    var link = '';
+    if (a.url && a.url !== '#') {
+      link = '<a href="' + a.url + '" target="_blank" rel="noopener" class="source-link">' + linkIcon + ' \u30BD\u30FC\u30B9\u3092\u8AAD\u3080</a>';
+    }
+    html += '<div class="article">' +
+      '<div class="article-top"><span class="impact-badge ' + ic + '">' + il + '</span><span class="article-source">' + a.source + '</span></div>' +
+      '<h3 class="article-title">' + a.title + '</h3>' +
+      '<p class="article-summary">' + a.summary + '</p>' +
+      '<div class="article-footer"><div class="article-tags">' + tags + '</div>' + link + '</div>' +
+      '</div>';
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function switchTab(i) { activeTab = i; renderTabs(); renderArticles(i); }
+
+function getTodayStr() {
+  var d = new Date();
+  var jst = new Date(d.getTime() + (9 * 3600000) + (d.getTimezoneOffset() * 60000));
+  return jst.toISOString().slice(0, 10);
+}
+
+function initDatePicker() { document.getElementById('datePicker').value = getTodayStr(); }
+
+function navigateDate(delta) {
+  var p = document.getElementById('datePicker');
+  var d = new Date(p.value);
+  d.setDate(d.getDate() + delta);
+  p.value = d.toISOString().slice(0, 10);
+  loadDate(p.value);
+}
+
+function loadDate(ds) {
+  if (ds === getTodayStr()) { window.location.href = './'; return; }
+  window.location.href = ARCHIVE_BASE + ds + '.html';
+}
+
+renderTabs();
+renderArticles(0);
+initDatePicker();
+</script>
+</body>
+</html>
