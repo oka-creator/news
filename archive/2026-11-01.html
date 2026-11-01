@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のテックニュース | 2026年11月1日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f8;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #555568;
+    --text-light: #8888a0;
+    --border: #e4e4ec;
+    --accent: #ff6b35;
+    --accent-hover: #e85d2c;
+    --tag-bg: #f0f0f5;
+    --shadow: 0 1px 8px rgba(0,0,0,0.05);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.09);
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .date-display {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  /* ---- Date nav ---- */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 24px;
+  }
+  .date-nav input[type="date"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .date-nav input[type="date"]:focus { border-color: var(--accent); }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text-sub); background: var(--tag-bg); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,0.25);
+  }
+  .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ---- Article card ---- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.15s;
+    animation: fadeIn 0.35s ease both;
+  }
+  .article:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .article:nth-child(2) { animation-delay: 0.07s; }
+  .article:nth-child(3) { animation-delay: 0.14s; }
+
+  .article-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .impact-badge {
+    padding: 2px 9px;
+    border-radius: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+  .impact-high   { background: #fff0ed; color: #d94432; }
+  .impact-medium { background: #fff8ed; color: #c96d10; }
+  .impact-low    { background: #edf4ff; color: #3578c5; }
+
+  .article-source { font-size: 12px; color: var(--text-light); }
+
+  .article-title {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .article-summary {
+    font-size: 13.5px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .article-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--text-sub);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-link:hover { color: var(--accent-hover); }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-tags { font-size: 13px; color: var(--accent); font-weight: 700; }
+  .footer-info { font-size: 11.5px; color: var(--text-light); margin-top: 4px; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+  .empty-state p { font-size: 14px; margin-top: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 20px 14px 40px; }
+    .article { padding: 18px; }
+    h1 { font-size: 20px; }
+    .tab { font-size: 11px; padding: 9px 4px; }
+    .tab-icon { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-row">
+      <span style="font-size:26px">📰</span>
+      <h1>今日のテックニュース</h1>
+    </div>
+    <div class="date-display">2026年11月1日</div>
+  </header>
+
+  <nav class="date-nav">
+    <button class="date-btn" onclick="navigateDate(-1)">&larr; 前日</button>
+    <input type="date" id="datePicker" onchange="loadDate(this.value)" />
+    <button class="date-btn" onclick="navigateDate(1)">翌日 &rarr;</button>
+  </nav>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
+  <footer>
+    <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
+    <div class="footer-info">Powered by Gemini API &times; GitHub Actions &#x2502; 毎朝 7:00 自動更新</div>
+  </footer>
+</div>
+
+<script>
+const categories = [{"name":"生成AI・LLM","icon":"robot","articles":[{"title":"Google「Gemini 4 Carbon」とOpenAI「GPT-6.1 Terra」を発表、API料金半額で競争激化","summary":"Googleは最新モデル「Gemini 4 Carbon」を、OpenAIは「GPT-6.1 Terra」をそれぞれ発表し、両社がAPI料金を半額に設定したことで生成AI市場の競争が激化しています。この動きは、開発者にとって高性能なLLMをより低コストで利用できる画期的な機会を提供します。これにより、AIアプリケーションの開発コストが削減され、新たなイノベーションが促進されると期待されます。特に、スタートアップや個人開発者にとっては、大規模なAIモデルへのアクセスが容易になり、開発の敷居が大きく下がります。","source":"がま＠がま - note","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGa3I9zsNo51GuJ1UdaVcXRrLx4E-HAmRRAngo4c94p3aoaeX4QC53AOpSzmDa4yu89JOZFT9ebEGwhKdE8Atyqoxbz6kQ4pzBMvUrbWGYszc_a2Xq0l7hMSgqwL441p1dIh-KifB4=","impact":"high","tags":["生成AI","LLM","API料金","競争激化"]},{"title":"デジタル庁、「ガバメントAI 源内」による国会答弁作成支援AIアプリを本格提供へ","summary":"デジタル庁は、独自開発した生成AI基盤「ガバメントAI 源内」を活用し、政府職員向けの「国会答弁作成支援AIアプリ」を2027年1月から本格提供すると発表しました。現在、プロトタイプ版が第222回臨時国会で試験提供されており、限られた時間の中で高い正確性と一貫性が求められる国会答弁作成業務の負担軽減と効率化を目指します。このアプリは、行政業務におけるAI導入の具体的な事例であり、公務員の生産性向上に貢献することが期待されます。将来的には、他の行政分野への応用も視野に入れられています。","source":"デジタル庁のAIアプリで国会答弁案の作成支援、来年1月に本格提供へ - ケータイ Watch","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG_QXVs_AAQo2wkwijrs-u21-rKg19x9AuRf4HCVWIgGpR7-PhB-It3NrDbYwh98uQsbcPNR72CN7OrWod-ca3uQIYZETs6bV4Rw81S9qtSLkS6v3jnY5V5jHo8zT8HHghdJ-lqov-CuqQge4WoK03jS8Ju","impact":"medium","tags":["デジタル庁","ガバメントAI","行政効率化","AIアプリ"]},{"title":"国産LLM「Sarashina」に初の思考モデル実装、API提供でエージェント・検索性能向上","summary":"ソフトバンク傘下のSB Intuitionsは、国産大規模言語モデル「Sarashina」シリーズに初の思考モデル「Sarashina3.2 mini thinking」を実装しました。このモデルは、回答生成前に問題分析や仮説検証を行うアーキテクチャを採用しており、複雑なツール呼び出しやWeb検索、コーディングにおける処理性能が大幅に向上しています。API形式で提供され、用途に応じた思考の深さ（low、medium、high）を指定できるため、開発者はより高度なAIエージェントや検索システムを構築できるようになります。国産LLMの進化は、日本のAI技術の競争力強化に貢献します。","source":"国産LLM「Sarashina」に初の思考モデル実装：API提供でエージェント・検索性能が向上","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHK5SbkNEH52q70LsuJAb4nvlJ6o_7Ub9Qs8FQ5KJxC_VkJ6ZCf3UzAZQdeD2wT1M6wlrqNpOw2MJNzuy54QhUSay3n87fdGdqpfRb54gCsUOgWYd_kJM-s_bRqxqiSYnTdhUUD","impact":"medium","tags":["国産LLM","Sarashina","思考モデル","API提供"]}]},{"name":"個人開発・インディーハッカー","icon":"rocket","articles":[{"title":"AI開発ツール「Cursor Pro」や「Claude Code」が個人開発者の生産性を大幅向上","summary":"2026年現在、AIツールは個人開発者にとって時間を生み出す強力な武器となっており、「AI-first IDE」であるCursor Proや、複雑な実装やマルチファイル編集に強いClaude CodeのようなAIコーディングエージェントが注目されています。これらのツールは、ゼロからコードを書くよりもAIと協力して迅速にプロトタイプを作成するアプローチを主流にしつつあります。これにより、個人開発者はより少ないリソースで高品質なアプリケーションを開発できるようになり、イノベーションの速度が加速します。開発プロセス全体の効率化が期待されます。","source":"【2026年最新】AI開発ツール完全比較｜7ツールの料金・機能・選び方を徹底解説","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFn00XzSjaY2AnT75Fc8y76mpud1PQI-cdYTYuYXhdkSrSesxYr9mv4z1NPR2ew0dTJdFxDsduVndjGuk3ix96XmZZQeBDfwTaaCOnjX6pKr8z5Nw7u6R2kYbXTCTqzfn4-6X9rMVN1pU-Dy0GM66sqURHlkxnvBNw=","impact":"high","tags":["AI開発ツール","個人開発","生産性向上","コーディングエージェント"]},{"title":"GitHub Copilot Fusionが一般提供開始、AIモデル自動選択で開発を効率化","summary":"GitHubは、AIモデルを自動で選択・連携する「Copilot Fusion」の一般提供を開始しました。これにより、開発者は手動でモデルを切り替えることなく、最適なAI支援を受けられるようになり、開発プロセスが大幅に効率化されます。有料Copilotプランの利用者は、2026年11月30日までFusionで使用したモデルの費用が30%割引となるため、積極的に活用することで開発コストの削減と効率化が期待できます。この機能は、特に複数のAIモデルを使い分ける複雑なプロジェクトにおいて、開発者の負担を軽減し、生産性を向上させるでしょう。","source":"GitHub、AIモデルを自動選択・連携するCopilot Fusionを一般提供、資料とエージェントの作業をまとめるCopilot Projectsをパブリックプレビューに ——GitHub Universe 2026で自動化・コードレビュー・セキュリティも更新 | gihyo.jp","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHr498nQmxMTXD6lR3C73R0CU3vxSnQ6DTA6AtsBf6Ad8xt1TIsIc5yyg2Sk3b2gdNORotwQiZxHfi6k1ZGH0CRNOmmvdvZnLYfS7rVNSr2J8a3fv3FSV7RrJegiip0W3YF6Xt_EdicMlqBcRee7trb","impact":"high","tags":["GitHub Copilot","AIモデル","開発効率化","自動化"]},{"title":"AIコーディングエージェントのセキュリティリスク：悪意ある「AGENTS.md」ファイルに注意","summary":"AIコーディングエージェント（Claude CodeやCodexなど）を利用する開発者に対し、ダウンロードフォルダに置かれた悪意ある「AGENTS.md」ファイルによるアカウント乗っ取りの危険性が指摘されています。ブラウザがユーザーの操作なしにファイルを書き込めるダウンロードフォルダは、AIエージェントが信頼して読み込む指示書となり得るため、作業場所の見直しや、自分で作成していないAGENTS.mdファイルを必ず確認することが推奨されます。この問題は、AIツールの普及に伴う新たなセキュリティ脅威であり、開発者は自身の環境とAIエージェントの動作をより注意深く管理する必要があります。セキュリティ意識の向上が求められます。","source":"2026-11-01 Hacker News Top 10｜Tsuyoshi Hie - note","url":"https://vertexaisearch.google.com/grounding-api-redirect/AUZIYQHmjdYXdaGQkO-xbxFRf50Mo72_x1tTFbBmfApE-Wz6wKSeCqv96UxgFkNFTd8c6hDZcIpHs3bmc0JQfI-AJrUH19apL41seQMAnEdYCF1rQqlhRztqnAub5Dx07CqUrt2dq0a","impact":"medium","tags":["AIエージェント","セキュリティ","情報漏洩","開発者向け"]}]},{"name":"テック全般","icon":"laptop","articles":[{"title":"シカゴの「APTA 2026」でiTLCインテリジェント交通管制ソリューションが展示","summary":"米国シカゴで開催された「APTA 2026トランスフォーム＆エキスポ」にて、Towards Buddha Co., Ltd.とICP DASがiTLCインテリジェント交通管制システムを紹介しました。このシステムは、モジュール式・冗長構成設計、セキュアなネットワーク接続、交通信号との統合、アクティブアラートシステムといった主要機能を備えています。スマート交差点の運用における信頼性、安全性、効率性を高めることを目指しており、都市の交通インフラの未来を形作る重要な技術として注目されます。IoTとAIを活用したスマートシティ化の一環です。","source":"Towards Buddha Co., Ltd.とICP DAS、シカゴのAPTA 2026でiTLCインテリジェント交通管制ソリューションを展示 - PR Newswire","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHeV0AB_AFP5z2rHNRjFDJroFwBmhz04pS_FL-Gj0ZU5FP_EoWo8OT7DeObL9vkMloHJTaiCa6dnNYdYc0ccdZ73Wx0ril23diavsvxntt71rOF2Aqui1SzG8E-1SWxP4-okzqycaXLp14Hr1regWEUS8-nW1JyFMOCfVhWqgImBQIIlhsInfnUqAvIjIM8CZhPTmIv7keJloCe6Cugx7Q=","impact":"low","tags":["スマートシティ","交通管制","IoT","APTA 2026"]},{"title":"YouTuberがAIで制作した長編映画がアカデミー賞を狙う","summary":"YouTubeで「Gossip Goblin」として活動するザック・ロンドン監督が生成AIで制作した長編映画「Gods Don&#039;t Give Gifts（原題）」が、12月に全米で劇場公開され、アカデミー賞の長編アニメーション賞を狙っていると報じられました。Fableが出資するAI企業が製作を手掛け、アニメーションの歴史における画期的な瞬間になると期待されています。この事例は、AIがクリエイティブ産業、特に映画制作において新たな可能性を切り開いていることを示しており、今後のコンテンツ制作のあり方に大きな影響を与える可能性があります。AIと人間の協業による新たな芸術表現の誕生です。","source":"YouTuberがAIで作った長編映画、アカデミー賞を狙う","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHgk4Hlq4Gziwmvjp-2ZWL2fWIalgcb_tbVeSXuFvrmDHo_B8tHMNABYhjHLeRgGG_Je2YZM4h6xCSIFkD1cgkXWFL6eXk-mgXgQRHn4BvHm5H9lyu_DTnD-d3mqg==","impact":"medium","tags":["生成AI","映画制作","アカデミー賞","クリエイティブ"]},{"title":"GMOクラウド情報流出問題、2024年にグループ会社が脆弱性を指摘済み","summary":"GMOインターネットが提供するFX自動売買向けクラウドサービス「お名前ドットコム デスクトップクラウド」で発生した顧客個人情報流出問題において、同グループのセキュリティ会社が2024年の時点でシステムの脆弱性を指摘していたことが明らかになりました。この問題を受け、熊谷会長が11月2日にも会見を行う予定です。内部からの警告があったにもかかわらず対策が遅れたことで、企業のセキュリティガバナンスの重要性が改めて浮き彫りになりました。開発者にとっては、セキュリティ対策の徹底と脆弱性管理のプロセス改善が喫緊の課題となります。","source":"2026年11月1日 - 東京報道新聞","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGPx6PF0TpDzJtHAWteeLdtKo5uMrLKXbJHDcTWEJ8VoIrWpzZsgrXROyp5-90RfXEjwYsVYRSvmG3uBM_xL6OrhDD2XsdgmeghGLkKQojiprEiOl5goNFN04DTLvXfK5JuUKFWhRlpkaGEh1fdBg==","impact":"high","tags":["情報流出","セキュリティ","脆弱性","クラウドサービス"]}]}];
+const ARCHIVE_BASE = './archive/';
+let activeTab = 0;
+
+const ICONS = { robot: '\u{1F916}', rocket: '\u{1F680}', laptop: '\u{1F4BB}' };
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = categories.map((c, i) =>
+    '<button class="tab' + (i === activeTab ? ' active' : '') + '" onclick="switchTab(' + i + ')">' +
+    '<span class="tab-icon">' + (ICONS[c.icon] || '') + '</span>' + c.name + '</button>'
+  ).join('');
+}
+
+function renderArticles(ci) {
+  const cat = categories[ci];
+  if (!cat || !cat.articles || cat.articles.length === 0) {
+    document.getElementById('content').innerHTML = '<div class="empty-state"><p>\u{1F4ED} この日の記事はありません</p></div>';
+    return;
+  }
+
+  const linkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  var html = '<div class="tab-content active">';
+  for (var i = 0; i < cat.articles.length; i++) {
+    var a = cat.articles[i];
+    var ic = 'impact-' + (a.impact || 'medium');
+    var il = (a.impact || 'medium').toUpperCase();
+    if (il === 'MEDIUM') il = 'MID';
+    var tags = '';
+    if (a.tags) {
+      for (var t = 0; t < a.tags.length; t++) {
+        tags += '<span class="tag">' + a.tags[t] + '</span>';
+      }
+    }
+    var link = '';
+    if (a.url && a.url !== '#') {
+      link = '<a href="' + a.url + '" target="_blank" rel="noopener" class="source-link">' + linkIcon + ' \u30BD\u30FC\u30B9\u3092\u8AAD\u3080</a>';
+    }
+    html += '<div class="article">' +
+      '<div class="article-top"><span class="impact-badge ' + ic + '">' + il + '</span><span class="article-source">' + a.source + '</span></div>' +
+      '<h3 class="article-title">' + a.title + '</h3>' +
+      '<p class="article-summary">' + a.summary + '</p>' +
+      '<div class="article-footer"><div class="article-tags">' + tags + '</div>' + link + '</div>' +
+      '</div>';
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function switchTab(i) { activeTab = i; renderTabs(); renderArticles(i); }
+
+function getTodayStr() {
+  var d = new Date();
+  var jst = new Date(d.getTime() + (9 * 3600000) + (d.getTimezoneOffset() * 60000));
+  return jst.toISOString().slice(0, 10);
+}
+
+function initDatePicker() { document.getElementById('datePicker').value = getTodayStr(); }
+
+function navigateDate(delta) {
+  var p = document.getElementById('datePicker');
+  var d = new Date(p.value);
+  d.setDate(d.getDate() + delta);
+  p.value = d.toISOString().slice(0, 10);
+  loadDate(p.value);
+}
+
+function loadDate(ds) {
+  if (ds === getTodayStr()) { window.location.href = './'; return; }
+  window.location.href = ARCHIVE_BASE + ds + '.html';
+}
+
+renderTabs();
+renderArticles(0);
+initDatePicker();
+</script>
+</body>
+</html>
