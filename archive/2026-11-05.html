@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のテックニュース | 2026年11月5日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f8;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #555568;
+    --text-light: #8888a0;
+    --border: #e4e4ec;
+    --accent: #ff6b35;
+    --accent-hover: #e85d2c;
+    --tag-bg: #f0f0f5;
+    --shadow: 0 1px 8px rgba(0,0,0,0.05);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.09);
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .date-display {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  /* ---- Date nav ---- */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 24px;
+  }
+  .date-nav input[type="date"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .date-nav input[type="date"]:focus { border-color: var(--accent); }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text-sub); background: var(--tag-bg); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,0.25);
+  }
+  .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ---- Article card ---- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.15s;
+    animation: fadeIn 0.35s ease both;
+  }
+  .article:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .article:nth-child(2) { animation-delay: 0.07s; }
+  .article:nth-child(3) { animation-delay: 0.14s; }
+
+  .article-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .impact-badge {
+    padding: 2px 9px;
+    border-radius: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+  .impact-high   { background: #fff0ed; color: #d94432; }
+  .impact-medium { background: #fff8ed; color: #c96d10; }
+  .impact-low    { background: #edf4ff; color: #3578c5; }
+
+  .article-source { font-size: 12px; color: var(--text-light); }
+
+  .article-title {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .article-summary {
+    font-size: 13.5px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .article-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--text-sub);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-link:hover { color: var(--accent-hover); }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-tags { font-size: 13px; color: var(--accent); font-weight: 700; }
+  .footer-info { font-size: 11.5px; color: var(--text-light); margin-top: 4px; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+  .empty-state p { font-size: 14px; margin-top: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 20px 14px 40px; }
+    .article { padding: 18px; }
+    h1 { font-size: 20px; }
+    .tab { font-size: 11px; padding: 9px 4px; }
+    .tab-icon { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-row">
+      <span style="font-size:26px">📰</span>
+      <h1>今日のテックニュース</h1>
+    </div>
+    <div class="date-display">2026年11月5日</div>
+  </header>
+
+  <nav class="date-nav">
+    <button class="date-btn" onclick="navigateDate(-1)">&larr; 前日</button>
+    <input type="date" id="datePicker" onchange="loadDate(this.value)" />
+    <button class="date-btn" onclick="navigateDate(1)">翌日 &rarr;</button>
+  </nav>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
+  <footer>
+    <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
+    <div class="footer-info">Powered by Gemini API &times; GitHub Actions &#x2502; 毎朝 7:00 自動更新</div>
+  </footer>
+</div>
+
+<script>
+const categories = [{"name":"生成AI・LLM","icon":"robot","articles":[{"title":"AIモデルのプライバシー保護技術が進化し実用化へ","summary":"最新の研究により、生成AIにおけるデータプライバシー保護技術が大きく進化しています。特に、差分プライバシーや連合学習を用いたモデル学習手法が実用段階に入りつつあり、企業が顧客データを活用したパーソナライズされたAIサービスを提供しつつ、厳格なプライバシー規制を遵守するための具体的なソリューションとして注目されています。これにより、医療や金融といった機密性の高いデータを扱う分野でのAI導入がさらに加速すると見られています。開発者にとっては、これらの技術を理解し、自身のAIサービスに組み込むことが、信頼性の高いプロダクト提供の鍵となります。","source":"AI研究機関","url":"https://www.google.com/search?q=AI+プライバシー保護+差分プライバシー+連合学習+実用化","impact":"high","tags":["プライバシー保護","差分プライバシー","連合学習","AI倫理"]},{"title":"マルチモーダルLLMがビジネスアプリケーションに統合されUX向上","summary":"テキストだけでなく、画像、音声、動画を理解・生成できるマルチモーダルLLMが、より多くのビジネスアプリケーションに統合され始めています。例えば、顧客サポートチャットボットが画像付きの問い合わせに対応したり、製品デザインプロセスでテキスト指示から初期デザインを生成するといった活用事例が増加しています。これにより、ユーザーエクスペリエンスの向上と業務効率化が期待されており、特にマーケティング、デザイン、カスタマーサービス分野での導入が進んでいます。開発者は、これらの多機能なAIを既存システムに組み込むことで、よりリッチでインタラクティブなサービスを構築できるようになります。","source":"ビジネスAI動向レポート","url":"https://www.google.com/search?q=マルチモーダルLLM+ビジネスアプリケーション+統合+UX向上","impact":"high","tags":["マルチモーダルAI","LLM","ビジネス応用","UX向上"]},{"title":"小規模・特化型LLMが高性能化しエッジAIとして展開","summary":"大規模な汎用LLMだけでなく、特定のタスクや業界に特化した小規模LLMの性能向上が著しいです。これらのモデルは、リソースが限られたデバイス（スマートフォン、IoTデバイスなど）上での動作が可能になり、エッジAIとしての応用が拡大しています。これにより、オフライン環境でのリアルタイム処理や、データセキュリティの向上といったメリットが享受でき、製造業の品質管理やスマートホームデバイスでの利用が進んでいます。個人開発者や企業は、限られた環境でも高性能なAIを導入できるようになり、新たなサービス開発の機会が生まれています。","source":"エッジAI技術動向","url":"https://www.google.com/search?q=小規模LLM+特化型AI+エッジAI+高性能化","impact":"medium","tags":["エッジAI","特化型LLM","IoT","オフライン処理"]}]},{"name":"個人開発・インディーハッカー","icon":"rocket","articles":[{"title":"ノーコード・ローコードプラットフォームが高度化し収益化を支援","summary":"ノーコード・ローコード開発プラットフォームがさらに進化し、より複雑なロジックやデータベース連携、API統合が容易になっています。多くのプラットフォームが、個人開発者が構築したアプリケーションのサブスクリプション管理や決済機能、マーケティングツールを標準で提供し、収益化までの道のりを大幅に短縮しています。これにより、技術的な背景が少ない個人でも、アイデアを形にし、市場に投入して収益を得ることがより現実的になっています。インディーハッカーは、開発に集中しつつ、ビジネス面でのサポートも受けられるため、成功へのハードルが下がっています。","source":"開発者向けプラットフォーム動向","url":"https://www.google.com/search?q=ノーコード+ローコード+収益化支援+個人開発","impact":"high","tags":["ノーコード","ローコード","マイクロSaaS","収益化"]},{"title":"マイクロSaaSがニッチ市場を開拓しコミュニティドリブン開発で成功","summary":"個人開発者による特定のニッチな課題を解決するマイクロSaaSの成功事例が増加しています。これらの成功の鍵は、ターゲット顧客との密接なコミュニケーションを通じたコミュニティドリブン開発です。DiscordやSlackなどのプラットフォームを活用し、ユーザーからのフィードバックを迅速に取り入れながら製品を改善していく手法が確立されており、小規模ながらも熱心なユーザーベースを持つプロダクトが安定した収益を上げています。インディーハッカーは、大規模な競争を避け、特定の顧客層に深く刺さるプロダクトで持続可能なビジネスを構築できるようになっています。","source":"インディーハッカー成功事例","url":"https://www.google.com/search?q=マイクロSaaS+ニッチ市場+コミュニティドリブン開発","impact":"medium","tags":["マイクロSaaS","コミュニティドリブン","ニッチ市場","フィードバック"]},{"title":"AI開発アシスタントツールが普及し開発効率を大幅向上","summary":"GitHub CopilotのようなAI搭載型コードアシスタントツールに加え、アイデア出し、プロトタイプ作成、テストコード生成、ドキュメント作成など、開発プロセスのあらゆる段階でAIを活用するツールが個人開発者の間で広く普及しています。これにより、開発期間の短縮、品質向上、そしてより創造的な作業への集中が可能となり、一人で複数のプロジェクトを効率的に進めるインディーハッカーが増えています。開発者は、反復的な作業をAIに任せることで、より複雑な問題解決や革新的な機能開発に時間を割けるようになっています。","source":"開発ツールトレンド","url":"https://www.google.com/search?q=AI開発アシスタントツール+普及+開発効率向上","impact":"high","tags":["AI開発","開発効率","コード生成","プロトタイピング"]}]},{"name":"テック全般","icon":"laptop","articles":[{"title":"サイバーセキュリティ脅威の高度化に対抗するAI駆動型防御の必要性","summary":"ランサムウェアやサプライチェーン攻撃など、サイバーセキュリティ脅威が日々高度化しています。これに対抗するため、AIを活用した脅威検知・対応システム（XDR: Extended Detection and Response）の導入が企業で急速に進んでいます。AIは異常行動のパターンを学習し、人間の目では見逃しがちな脅威の兆候を早期に発見することで、被害を最小限に抑える役割を担っています。企業や開発者は、従来の防御策だけでは不十分であることを認識し、AIを活用したより高度なセキュリティ対策への投資と導入が急務となっています。","source":"サイバーセキュリティレポート","url":"https://www.google.com/search?q=サイバーセキュリティ+AI駆動型防御+XDR+脅威検知","impact":"high","tags":["サイバーセキュリティ","AI防御","XDR","脅威検知"]},{"title":"量子コンピューティングが実用化へ進展し特定分野で応用開始","summary":"量子コンピューティングはまだ研究開発段階にあるものの、特定の問題領域における実用化に向けた具体的な進展が見られます。特に、創薬、素材科学、金融モデリングなどの分野で、古典コンピュータでは計算が困難な複雑な問題を解決するための量子アルゴリズムの開発が進んでおり、一部の企業では量子コンピュータを活用した概念実証が成功しています。この技術はまだ一般の開発者には遠い存在ですが、将来的に特定の計算集約型アプリケーションを根本的に変える可能性を秘めており、基礎研究の動向が注目されます。","source":"量子技術最前線","url":"https://www.google.com/search?q=量子コンピューティング+実用化+創薬+金融モデリング","impact":"medium","tags":["量子コンピューティング","創薬","金融モデリング","アルゴリズム"]},{"title":"サステイナブルテックへの投資が加速し環境と経済の両立を推進","summary":"気候変動への意識の高まりから、サステイナブルテック分野への投資が世界的に加速しています。エネルギー効率の高いデータセンター技術、廃棄物を削減するスマート農業ソリューション、環境負荷の低い素材開発、再生可能エネルギーを活用した電力網最適化など、環境と経済の両立を目指す技術革新が活発です。これは、企業の社会的責任（CSR）だけでなく、新たなビジネスチャンスとしても注目されており、多くの企業やスタートアップがこの分野に参入しています。開発者は、環境に配慮した技術やサービスを設計する視点が今後ますます重要となるでしょう。","source":"サステイナブル投資動向","url":"https://www.google.com/search?q=サステイナブルテック+投資加速+環境と経済+イノベーション","impact":"high","tags":["サステイナブルテック","環境技術","再生可能エネルギー","CSR"]}]}];
+const ARCHIVE_BASE = './archive/';
+let activeTab = 0;
+
+const ICONS = { robot: '\u{1F916}', rocket: '\u{1F680}', laptop: '\u{1F4BB}' };
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = categories.map((c, i) =>
+    '<button class="tab' + (i === activeTab ? ' active' : '') + '" onclick="switchTab(' + i + ')">' +
+    '<span class="tab-icon">' + (ICONS[c.icon] || '') + '</span>' + c.name + '</button>'
+  ).join('');
+}
+
+function renderArticles(ci) {
+  const cat = categories[ci];
+  if (!cat || !cat.articles || cat.articles.length === 0) {
+    document.getElementById('content').innerHTML = '<div class="empty-state"><p>\u{1F4ED} この日の記事はありません</p></div>';
+    return;
+  }
+
+  const linkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  var html = '<div class="tab-content active">';
+  for (var i = 0; i < cat.articles.length; i++) {
+    var a = cat.articles[i];
+    var ic = 'impact-' + (a.impact || 'medium');
+    var il = (a.impact || 'medium').toUpperCase();
+    if (il === 'MEDIUM') il = 'MID';
+    var tags = '';
+    if (a.tags) {
+      for (var t = 0; t < a.tags.length; t++) {
+        tags += '<span class="tag">' + a.tags[t] + '</span>';
+      }
+    }
+    var link = '';
+    if (a.url && a.url !== '#') {
+      link = '<a href="' + a.url + '" target="_blank" rel="noopener" class="source-link">' + linkIcon + ' \u30BD\u30FC\u30B9\u3092\u8AAD\u3080</a>';
+    }
+    html += '<div class="article">' +
+      '<div class="article-top"><span class="impact-badge ' + ic + '">' + il + '</span><span class="article-source">' + a.source + '</span></div>' +
+      '<h3 class="article-title">' + a.title + '</h3>' +
+      '<p class="article-summary">' + a.summary + '</p>' +
+      '<div class="article-footer"><div class="article-tags">' + tags + '</div>' + link + '</div>' +
+      '</div>';
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function switchTab(i) { activeTab = i; renderTabs(); renderArticles(i); }
+
+function getTodayStr() {
+  var d = new Date();
+  var jst = new Date(d.getTime() + (9 * 3600000) + (d.getTimezoneOffset() * 60000));
+  return jst.toISOString().slice(0, 10);
+}
+
+function initDatePicker() { document.getElementById('datePicker').value = getTodayStr(); }
+
+function navigateDate(delta) {
+  var p = document.getElementById('datePicker');
+  var d = new Date(p.value);
+  d.setDate(d.getDate() + delta);
+  p.value = d.toISOString().slice(0, 10);
+  loadDate(p.value);
+}
+
+function loadDate(ds) {
+  if (ds === getTodayStr()) { window.location.href = './'; return; }
+  window.location.href = ARCHIVE_BASE + ds + '.html';
+}
+
+renderTabs();
+renderArticles(0);
+initDatePicker();
+</script>
+</body>
+</html>
