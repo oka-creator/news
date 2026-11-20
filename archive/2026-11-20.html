@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>今日のテックニュース | 2026年11月20日</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f5f8;
+    --surface: #ffffff;
+    --text: #1a1a2e;
+    --text-sub: #555568;
+    --text-light: #8888a0;
+    --border: #e4e4ec;
+    --accent: #ff6b35;
+    --accent-hover: #e85d2c;
+    --tag-bg: #f0f0f5;
+    --shadow: 0 1px 8px rgba(0,0,0,0.05);
+    --shadow-hover: 0 4px 20px rgba(0,0,0,0.09);
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ---- Header ---- */
+  header {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .date-display {
+    color: var(--text-light);
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+
+  /* ---- Date nav ---- */
+  .date-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 24px;
+  }
+  .date-nav input[type="date"] {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 7px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    outline: none;
+  }
+  .date-nav input[type="date"]:focus { border-color: var(--accent); }
+  .date-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-sub);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .date-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Tabs ---- */
+  .tabs {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+  }
+  .tab {
+    flex: 1;
+    padding: 10px 6px;
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    border-radius: 9px;
+    transition: all 0.2s ease;
+    text-align: center;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text-sub); background: var(--tag-bg); }
+  .tab.active {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(255,107,53,0.25);
+  }
+  .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ---- Article card ---- */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s, transform 0.15s;
+    animation: fadeIn 0.35s ease both;
+  }
+  .article:hover { box-shadow: var(--shadow-hover); transform: translateY(-1px); }
+  .article:nth-child(2) { animation-delay: 0.07s; }
+  .article:nth-child(3) { animation-delay: 0.14s; }
+
+  .article-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .impact-badge {
+    padding: 2px 9px;
+    border-radius: 5px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+  }
+  .impact-high   { background: #fff0ed; color: #d94432; }
+  .impact-medium { background: #fff8ed; color: #c96d10; }
+  .impact-low    { background: #edf4ff; color: #3578c5; }
+
+  .article-source { font-size: 12px; color: var(--text-light); }
+
+  .article-title {
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.55;
+    margin-bottom: 8px;
+  }
+
+  .article-summary {
+    font-size: 13.5px;
+    color: var(--text-sub);
+    line-height: 1.9;
+    margin-bottom: 14px;
+  }
+
+  .article-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .article-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    background: var(--tag-bg);
+    color: var(--text-sub);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .source-link:hover { color: var(--accent-hover); }
+
+  /* ---- Footer ---- */
+  footer {
+    text-align: center;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+  }
+  .footer-tags { font-size: 13px; color: var(--accent); font-weight: 700; }
+  .footer-info { font-size: 11.5px; color: var(--text-light); margin-top: 4px; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+  .empty-state p { font-size: 14px; margin-top: 10px; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 520px) {
+    .container { padding: 20px 14px 40px; }
+    .article { padding: 18px; }
+    h1 { font-size: 20px; }
+    .tab { font-size: 11px; padding: 9px 4px; }
+    .tab-icon { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="header-row">
+      <span style="font-size:26px">📰</span>
+      <h1>今日のテックニュース</h1>
+    </div>
+    <div class="date-display">2026年11月20日</div>
+  </header>
+
+  <nav class="date-nav">
+    <button class="date-btn" onclick="navigateDate(-1)">&larr; 前日</button>
+    <input type="date" id="datePicker" onchange="loadDate(this.value)" />
+    <button class="date-btn" onclick="navigateDate(1)">翌日 &rarr;</button>
+  </nav>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
+  <footer>
+    <div class="footer-tags">#個人開発 #生成AI #めんどい駆動開発</div>
+    <div class="footer-info">Powered by Gemini API &times; GitHub Actions &#x2502; 毎朝 7:00 自動更新</div>
+  </footer>
+</div>
+
+<script>
+const categories = [{"name":"生成AI・LLM","icon":"robot","articles":[{"title":"Google、AI利用を拒否する学校への検索アクセスを停止","summary":"Googleは11月3日、教育機関向けにAI利用を拒否した場合、検索エンジンへのアクセスを遮断すると発表しました。これは、Google ClassroomへのGeminiチャットボット導入に対する教育者からの反発を受け、AIツールのオン/オフ設定を可能にした一方で、AIを完全に拒否する学校は検索機能も利用できなくなるというものです。この動きは、教育現場におけるAI導入の強制力を高め、学校側にはAI利用の是非を巡る難しい選択を迫ります。開発者にとっては、GoogleのAI戦略が教育分野にも深く浸透し、将来的なAIツールの普及が加速する可能性を示唆しています。","source":"Google","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHNLjaxLGJ6WlTqRZBH4CNzNp5biHrHOz4VVHE2YbDi7SmnfCJcT2UIj3qZubRJ2xI-yAHwe2x79RKD4uPRjWtNI6CxFpzzfrl2pgBkBRbYbLLdhz4gFIUDSzpWfTwMCPDK2s9G8NeU=","impact":"high","tags":["教育AI","Google","検索エンジン","AIポリシー"]},{"title":"35Gates、外部にデータを送らない企業向けAIプラットフォーム『lmaas.io』提供開始","summary":"35Gates株式会社は11月10日、企業が機密データを外部AIサービスに送信することなく、自社専用AI環境を構築・運用できるSaaS型AIプラットフォーム「lmaas.io」の提供を開始しました。このプラットフォームは、1,000種類以上の公開AIモデルから選択でき、社内データを活用したRAGやLoRAによる追加学習にも対応します。これにより、エンジニア不要で安全性と柔軟性を両立した自社専用AIの利用・育成が可能となり、データセキュリティを重視する企業にとって魅力的な選択肢となります。開発者は、セキュアな環境でAIモデルをカスタマイズし、企業内でのAI活用を加速させる新たなツールとして注目できます。","source":"35Gates株式会社","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGEcZKmtYa9zNMn5b5NOd1-mL09L28nm_9nSIhUGsNvaLlG9VnRhDHgrmkkKK5_ndAX-X1TY7tDbg_Tx6F_6Xq3JCHP_tl2xm3_mqHAM59zI0pF8h8IOVQg8uUrc_vUkPbZoMqNF8vppdZqZYMXBvJU-kklTAE=","impact":"medium","tags":["企業AI","データセキュリティ","SaaS","RAG"]},{"title":"フィックスターズ、国内完結の高速推論AIサービス『Fixstars Inference Cloud』で『GLM-5.3』を提供開始","summary":"株式会社フィックスターズは、国内のGPUサーバー上で高速なAIをAPIで利用できるサービス「Fixstars Inference Cloud（FIC）」にて、Z.ai社製のオープンウェイトLLM「GLM-5.3」の提供を開始しました。GLM-5.3は複雑なソフトウェア開発やエージェントとしての長時間タスクを得意とし、主要事業者の中でも最安水準の単価と最速クラスの応答時間で利用できる点が特徴です。このサービスは、国内完結の環境で高性能LLMを低コストかつ高速に利用したい開発者にとって、新たな選択肢を提供し、AIアプリケーション開発の敷居を下げる可能性があります。","source":"株式会社フィックスターズ","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFU-pwyRxxgDCLjQkyg-tlE4XtFMcTT29tr09uK5cv9cdAdv5kGLQQyclC1MxwMe1NlGr-BflZRKjTdFTxQ9UG2dKMgqffdrb7UQvQ5z9MqptUW3XXoCOkPuAwX77NOx49Gu1Deoc8HwUxB6mAyXzvEhd9bJyQ=","impact":"medium","tags":["LLM","AI推論","国内サービス","API"]}]},{"name":"個人開発・インディーハッカー","icon":"rocket","articles":[{"title":"2026年のインディーハッカー向けツールキット：AIと自動化がソロビジネスを加速","summary":"2026年において、AIはインディーハッカーのビジネス構築の「物理法則」を変え、「Vibe Coding」と呼ばれる自然言語でのコード生成が主流となりました。CursorのようなAIファーストIDE、Claudeのような複雑なアーキテクチャ設計をサポートするモデル、そしてReplit Agentのようなプロジェクト全体をAIが計画・コーディング・デバッグ・デプロイするツールが登場しています。これにより、「アイデアからMVPまで」の期間が数日に短縮され、非技術系創業者でもアイデア検証が容易になっています。開発者、特に個人開発者にとっては、AIが開発プロセスを劇的に効率化し、より多くのアイデアを迅速に市場投入できる環境が整ったことを意味します。","source":"テックメディア","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH0nYbUmFWAVI1pD74hRHTGhY7ps8dQIC6ZfcT9PbI_zXS1USUerzbSjQ6kyJr9r7scwPZEkoDhH31132zJgjToSP6qJ5o42uFUIRA2qJRp2kSKZz_aYA68LfihW64XVKEQB48SS8_T8zPbWYYCHDycOvzY","impact":"high","tags":["インディーハッカー","AI開発","自動化","MVP"]},{"title":"10ドル以下のAIコーディングプランで開発コストを削減","summary":"2026年には、OpenCode、Cursor、GitHub Copilot、Cline、Zed、Xiaomi MiMoなどのAIコーディングアシスタントにおいて、10ドル以下の手頃なプランが多数登場しています。これにより、特にアジア地域の開発者や学生、インディーハッカーが、高価なサブスクリプションに縛られることなく、AIを活用したコーディング、デバッグ、テストが可能になります。複数のAIモデルへのアクセスや、専用のコーディングエージェント、インテリジェントなコードエディターを提供するものもあり、費用対効果の高い開発環境が実現されています。これは、AI開発ツールの民主化を促進し、より多くの個人開発者がAIの恩恵を受けられるようになることを示しています。","source":"業界分析","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHB1K0e6vij9tksCouLO1vPZRO2k6ysEnZLe72uT8NsRZgT8dgOIvfzW1Vd96sWNN84Qgp03aA7F-PYmx6MQE_RdmFjc_idzDsOKh5J-MHSLSP3xRlPA6RziIcWZjls8f8soDnxz3A4PKfvVbT4XVJYRjP0WW4w00_YTbdd9C3NGqrN","impact":"medium","tags":["AIコーディング","コスト削減","開発ツール","サブスクリプション"]},{"title":"個人情報流出を防ぐリズムゲーム『個人情報流出中』が配信開始","summary":"TERACTORは11月18日、iOS/Android向け耐久リズムゲーム「個人情報流出中」の配信を開始しました。このゲームは、ニュースで当たり前になった個人情報流出をテーマに、住所や氏名など6つの情報に迫るハッカーの手をリズムに合わせてタップで追い払うというユニークな内容です。3種類の手が異なるリズムで近づき、手元が赤くなったタイミングで叩くことで個人情報を守ります。120秒耐えると「貴重品モード」に移行し、高難度モードが楽しめます。開発者にとっては、社会問題をゲーム化するアイデアや、リズムゲームとしてのインタラクション設計が参考になるかもしれません。","source":"TERACTOR","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGf_-IKBy6l_1d0PgHsBcwEF09LJtnz4hV0AoEone08NN3e-TdvFrfsKNb021tTx8l0r4lDptIw84Jaaw2_4c89fd7bZx753koLVOPkfeazfj3rLLBDmbI_EFhyKrlg95ev9Ij-UA==","impact":"low","tags":["ゲームリリース","リズムゲーム","個人情報保護","インディーゲーム"]}]},{"name":"テック全般","icon":"laptop","articles":[{"title":"Microchip社、RT PolarFire FPGAポートフォリオの宇宙向け認定を拡充","summary":"Microchip Technologyは11月20日、RT（耐放射線）PolarFire FPGAおよびSoCファミリにおいて新たな宇宙飛行向け認定を取得し、高信頼性の航空宇宙・防衛向けソリューションのラインアップを強化したと発表しました。RT PolarFire FPGA RTPF500ZTは最高水準のDLA QMLクラスV認定を、RT PolarFire SoC FPGA RTPFS460ZTはQMLクラスQとMIL-STD-883クラスBの認定を取得しました。これにより、開発者は消費電力を抑えつつ、放射線によるアップセットの影響を受けにくい高集積なミッションクリティカルな宇宙システムを構築できるようになります。これは、宇宙開発や防衛分野における高性能かつ信頼性の高いハードウェア設計に貢献します。","source":"Microchip Technology","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEZyaqqan34sk-LQQRAJSiG0LFocB_DkX7IvAPaKklT4RdacVJU5jd6JIlugyWJedysplw95AJ0CcMjmHrqxKtj6TZwIXeg6EmfYX34ihE5S-xzR-kW5wBVaXHdwqZCjEXRd7W0","impact":"medium","tags":["FPGA","宇宙開発","耐放射線","航空宇宙"]},{"title":"Supermicro、PCIe Gen 6対応のオールフラッシュストレージサーバーを出荷開始","summary":"Supermicroは11月20日、AMD EPYC™ 9006シリーズプロセッサを搭載した初のオールフラッシュストレージサーバーの出荷を開始しました。このシステムはPCIe Gen 6 I/O仕様をサポートし、PCIe Gen 5と比較してシーケンシャル読み取り帯域幅を最大100%改善します。AIトレーニングやHPC（ハイパフォーマンスコンピューティング）ワークロードの性能要件に対応するため、Hammerspace、IBM、MinIO、Nutanixなどの主要なソフトウェア定義ストレージパートナーのソリューションと連携します。開発者にとっては、AI規模の導入を可能にする高速ストレージソリューションとして、データ集約型アプリケーションの性能向上に直結する重要な進展です。","source":"Supermicro","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFyXoHQwtdJAgyfyxuxqgXewLCAaG-qE1uIRzsCAI-9mvyk14lhKxvAbiQdS8t_XbRdt9B4ZLHFO5ElAI3Dm1VDiagkokxeNq1ZKAsxEO0yvqQ_n-SQfYmL8eJAT_mx-oTZLMGb30hIXRgN","impact":"high","tags":["ストレージ","PCIe Gen 6","AIインフラ","HPC"]},{"title":"ウェーハレーザーマーキングマシン世界市場、2032年に1億6,042万米ドルへ成長予測","summary":"ReportPrimeは11月20日、世界のウェーハレーザーマーキングマシン市場に関する調査レポートを公表しました。半導体の製造履歴を追跡するトレーサビリティ需要と、SiC・GaNなどの多様なウェーハ材料への対応を背景に、2025年の市場規模約1億330万米ドルから、2032年には年平均成長率約6.49％で拡大し、約1億6,042万米ドルに達すると予測しています。単なる刻印速度だけでなく、材料への影響を抑えた加工、安定した読み取り、製造システムとの連携が投資判断の焦点です。特にSiC・GaNウェーハ向けには材料に適したレーザー条件の選定が重要視されます。半導体製造に関わる開発者にとっては、トレーサビリティ技術の進化と新材料への対応が、今後の製造プロセス設計において重要な要素となることを示唆しています。","source":"ReportPrime","url":"https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGZWnTelz9hVDTosAtcpD8UcturORjMZhq9xIPNuDt99YdqVUNFOWRWW2-mvVMkeKQ6b2qNu9BHUpMehcAc-TS87m_FD9kCVnrcX_22PLPUw527lwFBHIXeCE72FqtXUmY=","impact":"medium","tags":["半導体","レーザーマーキング","市場予測","トレーサビリティ"]}]}];
+const ARCHIVE_BASE = './archive/';
+let activeTab = 0;
+
+const ICONS = { robot: '\u{1F916}', rocket: '\u{1F680}', laptop: '\u{1F4BB}' };
+
+function renderTabs() {
+  const el = document.getElementById('tabs');
+  el.innerHTML = categories.map((c, i) =>
+    '<button class="tab' + (i === activeTab ? ' active' : '') + '" onclick="switchTab(' + i + ')">' +
+    '<span class="tab-icon">' + (ICONS[c.icon] || '') + '</span>' + c.name + '</button>'
+  ).join('');
+}
+
+function renderArticles(ci) {
+  const cat = categories[ci];
+  if (!cat || !cat.articles || cat.articles.length === 0) {
+    document.getElementById('content').innerHTML = '<div class="empty-state"><p>\u{1F4ED} この日の記事はありません</p></div>';
+    return;
+  }
+
+  const linkIcon = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+
+  var html = '<div class="tab-content active">';
+  for (var i = 0; i < cat.articles.length; i++) {
+    var a = cat.articles[i];
+    var ic = 'impact-' + (a.impact || 'medium');
+    var il = (a.impact || 'medium').toUpperCase();
+    if (il === 'MEDIUM') il = 'MID';
+    var tags = '';
+    if (a.tags) {
+      for (var t = 0; t < a.tags.length; t++) {
+        tags += '<span class="tag">' + a.tags[t] + '</span>';
+      }
+    }
+    var link = '';
+    if (a.url && a.url !== '#') {
+      link = '<a href="' + a.url + '" target="_blank" rel="noopener" class="source-link">' + linkIcon + ' \u30BD\u30FC\u30B9\u3092\u8AAD\u3080</a>';
+    }
+    html += '<div class="article">' +
+      '<div class="article-top"><span class="impact-badge ' + ic + '">' + il + '</span><span class="article-source">' + a.source + '</span></div>' +
+      '<h3 class="article-title">' + a.title + '</h3>' +
+      '<p class="article-summary">' + a.summary + '</p>' +
+      '<div class="article-footer"><div class="article-tags">' + tags + '</div>' + link + '</div>' +
+      '</div>';
+  }
+  html += '</div>';
+  document.getElementById('content').innerHTML = html;
+}
+
+function switchTab(i) { activeTab = i; renderTabs(); renderArticles(i); }
+
+function getTodayStr() {
+  var d = new Date();
+  var jst = new Date(d.getTime() + (9 * 3600000) + (d.getTimezoneOffset() * 60000));
+  return jst.toISOString().slice(0, 10);
+}
+
+function initDatePicker() { document.getElementById('datePicker').value = getTodayStr(); }
+
+function navigateDate(delta) {
+  var p = document.getElementById('datePicker');
+  var d = new Date(p.value);
+  d.setDate(d.getDate() + delta);
+  p.value = d.toISOString().slice(0, 10);
+  loadDate(p.value);
+}
+
+function loadDate(ds) {
+  if (ds === getTodayStr()) { window.location.href = './'; return; }
+  window.location.href = ARCHIVE_BASE + ds + '.html';
+}
+
+renderTabs();
+renderArticles(0);
+initDatePicker();
+</script>
+</body>
+</html>
